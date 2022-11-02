@@ -1,0 +1,53 @@
+{
+  "name": "mockserver",
+  "version": "1.0.0",
+  "description": "",
+  "module": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open --hot",
+    "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -w production",
+    "clear-cache": "node quell-server/bin/clearCache.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/preset-typescript": "^7.18.6",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/material": "^5.10.12",
+    "@mui/styles": "^5.10.10",
+    "@types/jest": "^29.2.1",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "css-loader": "^6.7.1",
+    "express": "^4.18.2",
+    "file-loader": "^6.2.0",
+    "graphql": "^16.6.0",
+    "mongoose": "^6.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "redis": "^4.3.1",
+    "style-loader": "^3.3.1",
+    "typescript": "^4.8.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/preset-react": "^7.18.6",
+    "babel-loader": "^8.2.5",
+    "concurrently": "^7.5.0",
+    "html-webpack-plugin": "^5.5.0",
+    "nodemon": "^2.0.20",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
