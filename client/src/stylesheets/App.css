@@ -1,6 +1,7 @@
 html {
   height: 100%;
   margin: auto;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -30,72 +31,94 @@ body {
 }
 
 
-.logoContainer {
-  width: 100%;
-  justify-content: center;
-  height:max-content;
-  display: flex;
-  
-}
-
 .main {
+  scroll-snap-align: start;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.logo {
-  padding-right: 15px;
-  margin-right: 45px;
-}
 
 #sticky-nav {
   position: fixed;
+  margin: 20px;
   transition: all 0.5s linear;
 }
 
-.navbar {
-  display: flex;
+.navbarContainer {
+  position: fixed;
   width: 100%;
-  justify-content: center;
+  height: 60px;
+  border: 1px solid black;
 }
 
-.navMenuContainer {
-  border-radius: 10px;
-  /* background-color: #d7d7d7; */
-  padding: 10px;
-  /* box-shadow: 0px 1px 5px 0px rgba(0,0,0); */
-  width: max-content;
-  display: flex;
-  align-self: center;
-}
 
 
 .demoContainer {
   margin: 120px auto 120px;
-  width: 880px;
+  width: 950px;
   border-radius: 25px;
-  height: 550px;
+  height: 700px;
   border: 2.25px solid rgba(0, 0, 0, .1);
   box-shadow: 0px 2px 7px 0px rgba(0,0,0);
   background-color: #e4e4e4;
   display: flex;
   overflow: hidden;
+  scroll-snap-align: y mandatory;
+  scroll-behavior: smooth;
+  transition: scroll-behavior, scroll-snap-align 0.5s ease-in-out;
 }
 
 
 .demoLeft {
-  /* background-color: rgb(48, 224, 166); */
   height: 100%;
   width: 50%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  
+  align-items: center;
 }
 
 .demoRight {
   /* background-color: aquamarine; */
   height: 100%;
   width: 50%;
+}
+
+.dropDownContainer {
+  margin-top: 20px;
+  margin-bottom: 15px;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.MuiAlert-message {
+  overflow: hidden!important;
+}
+
+.featuresContainer {
+  width: 1250px;
+  height: 1500px;
+}
+
+.monaco-editor {
+  width: 98%;
+  font-size: 50px;
+  z-index: 1;
+  padding-top: 5px;
+  padding-right: 5px;
+}
+
+.monaco-editor-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: 280px;
+  border: 2px solid rgba(0, 0, 0, .1);
+  width: 95%;
+  overflow: hidden!important;
+  border-radius: 10px;
 }

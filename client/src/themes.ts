@@ -3,12 +3,12 @@ import {createTheme} from '@mui/material/'
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#11DCF7',
+      main: '#ABA277  ',
       light: '#44ccec',
-      dark: '#014d64',
+      dark: '#D5C395',
     },
     secondary: {
-      main: '#001af5',
+      main: '#D5C395',
     },
     // overrides: {
     //    MuiButton: {

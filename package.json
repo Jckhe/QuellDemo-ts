@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "module": "module",
+  "proxy": "http://localhost:3000",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
@@ -19,6 +20,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
+    "@monaco-editor/react": "^4.4.6",
     "@mui/material": "^5.10.12",
     "@mui/styles": "^5.10.10",
     "@types/jest": "^29.2.1",
@@ -31,6 +33,7 @@
     "express": "^4.18.2",
     "file-loader": "^6.2.0",
     "graphql": "^16.6.0",
+    "monaco-editor": "^0.34.1",
     "mongoose": "^6.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

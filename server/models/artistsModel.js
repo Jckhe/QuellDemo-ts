@@ -5,8 +5,6 @@ const Schema = mongoose.Schema;
 
 const artistSchema = new Schema({
   name: { type: String, require: true},
-  albums:  [{name: String, artist: String, songs: Array}],
-  songs: [{name: String, artist: String, Album: String}],
 })
 //artists
 

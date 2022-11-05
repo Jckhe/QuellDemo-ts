@@ -10,12 +10,15 @@ const ArtistType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
-    albums: {
+    albums: { 
       type: new GraphQLList(AlbumType),
       async resolve(parent, args) {
-       const albumList =  await Album.find({artist: parent.name})
-       return albumList;
+        const albumList = await Album.find({artist: parent.name});
+        return albumList;
       }
+    },
+    songs: {
+      
     }
   })
 })
@@ -29,18 +32,18 @@ const AlbumType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: { type: GraphQLString},
+    songs: { 
+      type: new GraphQLList(SongType),
+      async resolve(parent, args) {
+        const songList = await Songs.find({album: parent.name});
+        return songList;
+      }
+    },
     artist: {
       type: ArtistType,
       async resolve(parent, args) {
         const albumArtist = await Artist.findOne({albums: {$elemMatch: {name: parent.name}}});
         return albumArtist;
-      }
-    },
-    songs: {
-      type: new GraphQLList(SongType),
-      async resolve(parent, args) {
-        const songList = await Songs.find({album: parent.name});
-        return songList;
       }
     }
   })
@@ -53,20 +56,7 @@ const SongType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
-    artist: {
-      type: ArtistType,
-      async resolve(parent, args) {
-        const songArtist = await Artist.findOne({songs: {$elemMatch: {name: parent.name}} });
-        return songArtist;
-      }
-    },
-    album: {
-      type: AlbumType,
-      async resolve(parent, args) {
-        const albumList = await Album.findOne({songs: {$elemMatch: {name: parent.name}} });
-        return albumList;
-      }
-    },
+    artist: { type: ArtistType },
   })
 })
 
@@ -103,15 +93,20 @@ const RootQuery = new GraphQLObjectType({
 const RootMutations = new GraphQLObjectType({
   name: 'RootMutationsType',
   fields: {
-    TEST: {
+    addSong: {
       type: SongType,
-      args: { name: {type: GraphQLString}},
+      args: { name: {type: GraphQLString}, album: {type: GraphQLString}, artist: {type: GraphQLString}},
       async resolve(parent, args) {
-        const song = await Songs.find({name: args.name})
+        const song = await Songs.create({name: args.name, album: args.album, artist: args.artist})
         return song;
       }
-    }
-  }
+    },
+    // deleteSong {
+    //   type: SongType,
+    //   args: { name: {type: GraphQLString}},
+    //   async resolve(parent, args) {
+    // }
+}
 })
 
 

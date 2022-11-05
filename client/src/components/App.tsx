@@ -1,9 +1,9 @@
 import '../stylesheets/App.css'
 import React, { useState, useEffect } from 'react';
 import {Button, Stack, Divider} from '@mui/material';
-import { LogoAndNav } from './LogoHeading';
+import { Navbar } from './Navbar';
 import { Demo } from './Demo';
-
+import { Features } from './Features';
 
 
 function App() {
@@ -23,10 +23,14 @@ function App() {
 
 
   return (
-    <div className="main" id={`${renderFx}`}>
-        <LogoAndNav />
-        <Demo />
-    </div>
+    <>
+      <Navbar />
+      <div className="main" id={`${renderFx}`}>
+          
+          <Features />
+          <Demo />
+      </div>
+    </>
   )
 }
 
