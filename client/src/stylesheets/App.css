@@ -1,12 +1,87 @@
 html {
   height: 100%;
   margin: auto;
+  height: 100vh;
   scroll-behavior: smooth;
+  font-family: 'sofia-light';
+}
+
+/* For 27-in screens */
+@media screen and (min-width: 1820px) and (max-width: 2560px)  {
+  .demoContainer {
+    max-width: 50%;
+    max-height: 950px;
+    margin: 320px auto 120px;
+  }
+
+  #demo-header {
+    
+  }
+
+  #scroll-demo {
+    top: 17.5rem;
+    right: 1.75rem;
+  }
+
+  .demoRight {
+    min-height: 950px;
+  }
+
+  .graphContainer {
+    height: 50em;
+    width: 90%;
+  }
+
+}
+
+
+
+
+/* for Laptops (Macbook 13.3) */
+@media screen and (min-width: 800px) and (max-width: 1800px) {
+  .demoContainer {
+    margin: 150px auto 120px;
+    max-width: 75%;
+    max-height: 720px;
+  }
+
+  #scroll-demo {
+    top: 8.5rem;
+  }
+
+  .demoRight {
+    min-height: 730px;
+  }
+
+  .graphContainer {
+    height: 35em;
+    width: 90%;
+  }
+
+}
+
+
+
+
+
+@font-face {
+  font-family: 'sofia-light';
+  src: url('../assets/sofiapro-light.woff2') format('woff2'),
+       url('../assets/sofiapro-light.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Monaco';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Monaco'), url('../assets/Monaco.woff') format('woff');
 }
 
 body {
   display: flex;
-  background-color: #eeeeee;
+  background-color: #e6f0ef;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -46,28 +121,99 @@ body {
   transition: all 0.5s linear;
 }
 
-.navbarContainer {
-  position: fixed;
-  width: 100%;
-  height: 60px;
-  border: 1px solid black;
+
+#renderedNav {
+  opacity: 1;
+  transition: all 0.65s linear;
 }
 
 
 
+
+.quell-bird-logo {
+  color: #4e90d6;
+  filter: brightness(0) invert(1);
+  position: relative;
+  transition: all 0.15s linear;
+  cursor: pointer;
+}
+
+.quell-bird-logo:hover {
+  filter: invert(0);
+  transform: rotate(10deg);
+  transition: transform 0.15s linear;
+}
+
+
+.statusContainer {
+  position: fixed;
+  bottom: 0;
+  z-index: 5;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
 .demoContainer {
-  margin: 120px auto 120px;
-  width: 950px;
+  justify-content: space-between;
+  z-index: 2;
+  width: 75%;
+  padding: 20px;
   border-radius: 25px;
-  height: 700px;
   border: 2.25px solid rgba(0, 0, 0, .1);
   box-shadow: 0px 2px 7px 0px rgba(0,0,0);
   background-color: #e4e4e4;
   display: flex;
+  align-items: center;
   overflow: hidden;
   scroll-snap-align: y mandatory;
   scroll-behavior: smooth;
+  min-height: 750px;
   transition: scroll-behavior, scroll-snap-align 0.5s ease-in-out;
+}
+
+.cacheControlContainer {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+}
+
+.graphContainer {
+  margin-top: -5em; 
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.demoRight {
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-right: 15px;
+  padding-left: 10px;
+  border: 2px solid red;
+}
+
+/* this div is only to set a point on the HTML so we can scroll on click to the demo container */
+#scroll-demo {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#scroll-about {
+  position: absolute;
+  top: 12vh;
+  left: 100vh;
+  visibility: hidden;
+}
+
+#demo-header {
+    height: 200px;
+    position: relative;
 }
 
 
@@ -78,13 +224,25 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-items: center;
 }
+
+#responseContainer {
+  min-width: 95%;
+  min-height: 20em;
+  max-height: 20em;
+  background-color: #474f57;
+  overflow-y: scroll;
+}
+
 
 .demoRight {
   /* background-color: aquamarine; */
   height: 100%;
   width: 50%;
 }
+
+
 
 .dropDownContainer {
   margin-top: 20px;
@@ -99,26 +257,181 @@ body {
   overflow: hidden!important;
 }
 
-.featuresContainer {
-  width: 1250px;
-  height: 1500px;
-}
+
 
 .monaco-editor {
-  width: 98%;
   font-size: 50px;
   z-index: 1;
   padding-top: 5px;
   padding-right: 5px;
+  min-height: 30%;
 }
 
 .monaco-editor-container {
   display: flex;
   justify-content: center;
   position: relative;
-  height: 280px;
+  height: 25%;
   border: 2px solid rgba(0, 0, 0, .1);
-  width: 95%;
+  width: 85%;
   overflow: hidden!important;
   border-radius: 10px;
+  margin-bottom: 5vh;
 }
+
+/*
+Team Cards
+*/
+h2 {
+  margin: auto;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.TeamCard {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  background-color: white;
+  border: 2px solid #e9e9e9;
+  border-top-left-radius: 45%;
+  border-top-right-radius: 50%;
+  border-bottom-left-radius: 35%;
+  border-bottom-right-radius: 40%;
+  font-size: 13px;
+  margin-bottom: 5px;
+  aspect-ratio:inherit;
+  min-height: 600px;
+  max-height: 600px;
+}
+
+#team-quell {
+  display: block;
+  margin: auto;
+  margin-top: 10%;
+  left: 50%;
+  right: 50%;
+  width: 60%;
+  padding: 2%;
+  margin-bottom: 5%;
+}
+
+#team {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;;
+  align-items: center;
+  font-size: 18px;
+}
+
+.profile-pics {
+  width: 55%;
+  padding: 8px;
+  max-width: 400px;
+  margin-bottom: 3%;
+  margin-top: 2%;
+}
+
+.profile-pics img {
+  margin-bottom: 4%;
+  max-width: 200px;
+}
+
+.team-member-name {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  font-size: 20px;
+}
+.social-icons {
+  position: relative;
+  top: 20px;
+  bottom: 0px;
+}
+.social-icons img {
+  margin-left: 40px;
+  height: 32px;
+  width: 32px;
+}
+
+
+/* About Section CSS */
+
+
+.aboutContainer {
+  margin-top: 180px;
+  width: 90%;
+  gap: 50px;
+  display: flex;
+  justify-content: center;
+  height: 1000px;
+}
+
+
+.quell-banner-container {
+  height: 100px;
+  width: 40%;
+}
+
+.about-content-container {
+  width: 50%;
+  flex-direction: column;
+  display: flex;
+  font-size: 1.2rem;
+  gap: 20px;
+  padding: 10px;
+}
+
+#aboutHeading {
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.featureList {
+  display: flex;
+  gap: 5px;
+  align-items:flex-start;
+}
+
+#featureItemHeading {
+  font-weight: bolder;
+}
+
+#featureItemContent {
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+#about-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eggIcon {
+  cursor: pointer;
+  transition: all 0.55s ease-in-out;
+}
+
+
+.eggIcon:hover {
+  transform: scale(1.1);
+  transition: all 0.35s ease-in-out;
+}
+
+#quell-cache-svg {
+  position: absolute;
+  height: 500px;
+  width: 500px;
+  top: 50%;
+  right: 30vh;
+  z-index: 0;
+  opacity: .5;
+}
+

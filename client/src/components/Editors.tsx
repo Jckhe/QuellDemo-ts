@@ -27,9 +27,8 @@ export const QueryEditor = ({setQuery, selectedQuery}: QueryEditorProps) => {
 
   return (
    <div className="monaco-editor-container" >
-    
     <ControlledEditor
-      height={"500px"}
+      height={"250px"}
       className={"monaco-editor"}
       defaultLanguage="graphql"
       value={query}

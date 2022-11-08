@@ -1,32 +1,32 @@
 import React from 'react';
-import Linkedin from '../images/icons/QUELL-icons-linkedin.svg';
-import Github from '../images/icons/QUELL-icons-github.svg';
+import Linkedin from '../assets/images/icons/QUELL-icons-linkedin.svg';
+import Github from '../assets/images/icons/QUELL-icons-github.svg';
 
 
-import Header from "../images/headers/QUELL-team quell-2color_1.svg";
-import Nick from "../images/profile_pics/QUELL-headshot w border-Nick.png";
-import Mike from "../images/profile_pics/QUELL-headshot w border-Mike.png";
-import Rob from "../images/profile_pics/QUELL-headshot w border-Rob.png";
-import Justin from "../images/profile_pics/QUELL-headshot w border-Justin.png";
-import Andrei from "../images/profile_pics/QUELL-headshot w border-Andrei.png";
-import Dasha from "../images/profile_pics/QUELL-headshot w border-Dasha.png";
-import Derek from "../images/profile_pics/QUELL-headshot w border-Derek.png";
-import Xiao from "../images/profile_pics/QUELL-headshot w border-Xiao.png";
-import Robleh from "../images/profile_pics/QUELL-headshot w border-Robleh.png";
-import Thomas from "../images/profile_pics/QUELL-headshot w border-Thomas.png";
-import Angela from "../images/profile_pics/QUELL-headshot w border-Angela.png";
-import Ken from "../images/profile_pics/QUELL-headshot w border-Ken.png";
-import Jinhee from "../images/profile_pics/QUELL-headshot w border-Jinhee.png";
-import Nayan from "../images/profile_pics/QUELL-headshot w border-Nayan.png";
-import Tash from "../images/profile_pics/QUELL-headshot w border-Tash.png";
-import Tim from "../images/profile_pics/QUELL-headshot w border-Tim.png";
-import Chang from "../images/profile_pics/QUELL-headshot w border-Chang.png";
-import Josh from "../images/profile_pics/QUELL-headshot w border-Josh.png";
-import Robert from "../images/profile_pics/QUELL-headshot w border-Robert.png";
-import DavidLopez from "../images/profile_pics/QUELL-headshot w border-DavidLopez.png";
-import IdanMichael from "../images/profile_pics/QUELL-headshot w border-IdanMichael.png";
-import SercanTuna from "../images/profile_pics/QUELL-headshot w border-SercanTuna.png";
-import ThomasPryor from "../images/profile_pics/QUELL-headshot w border-ThomasPryor.png";
+import Header from "../assets/images/headers/QUELL-team quell-2color_1.svg";
+import Nick from "../assets/images/profile_pics/QUELL-headshot w border-Nick.png";
+import Mike from "../assets/images/profile_pics/QUELL-headshot w border-Mike.png";
+import Rob from "../assets/images/profile_pics/QUELL-headshot w border-Rob.png";
+import Justin from "../assets/images/profile_pics/QUELL-headshot w border-Justin.png";
+import Andrei from "../assets/images/profile_pics/QUELL-headshot w border-Andrei.png";
+import Dasha from "../assets/images/profile_pics/QUELL-headshot w border-Dasha.png";
+import Derek from "../assets/images/profile_pics/QUELL-headshot w border-Derek.png";
+import Xiao from "../assets/images/profile_pics/QUELL-headshot w border-Xiao.png";
+import Robleh from "../assets/images/profile_pics/QUELL-headshot w border-Robleh.png";
+import Thomas from "../assets/images/profile_pics/QUELL-headshot w border-Thomas.png";
+import Angela from "../assets/images/profile_pics/QUELL-headshot w border-Angela.png";
+import Ken from "../assets/images/profile_pics/QUELL-headshot w border-Ken.png";
+import Jinhee from "../assets/images/profile_pics/QUELL-headshot w border-Jinhee.png";
+import Nayan from "../assets/images/profile_pics/QUELL-headshot w border-Nayan.png";
+import Tash from "../assets/images/profile_pics/QUELL-headshot w border-Tash.png";
+import Tim from "../assets/images/profile_pics/QUELL-headshot w border-Tim.png";
+import Chang from "../assets/images/profile_pics/QUELL-headshot w border-Chang.png";
+import Josh from "../assets/images/profile_pics/QUELL-headshot w border-Josh.png";
+import Robert from "../assets/images/profile_pics/QUELL-headshot w border-Robert.png";
+import DavidLopez from "../assets/images/profile_pics/QUELL-headshot w border-DavidLopez.png";
+import IdanMichael from "../assets/images/profile_pics/QUELL-headshot w border-IdanMichael.png";
+import SercanTuna from "../assets/images/profile_pics/QUELL-headshot w border-SercanTuna.png";
+import ThomasPryor from "../assets/images/profile_pics/QUELL-headshot w border-ThomasPryor.png";
 //import Alex, Cera, Jackie, Zoe here
 
 
@@ -222,19 +222,21 @@ const Team = () => {
 	const teamCardsArr = [];
 	for (let i = 0; i < TeamArr.length; i++) {
 		let currTeamObj = TeamArr[i];
-		teamCardsArr.push(
-			<TeamMember
-				src={currTeamObj.src}
-				bio={currTeamObj.bio}
-				name={currTeamObj.name}
-				linkedin={currTeamObj.linkedin}
-				github={currTeamObj.github}
-			/>
+		teamCardsArr.push(<article className="TeamCard">
+        <TeamMember
+          src={currTeamObj.src}
+          bio={currTeamObj.bio}
+          name={currTeamObj.name}
+          linkedin={currTeamObj.linkedin}
+          github={currTeamObj.github}
+        />
+      </article>
 		)
 	}
   return (
     <>
       <img id="team-quell" src={Header}></img>
+      <h2>The Good Eggs of Quell</h2>
       <div id="team">
 			{teamCardsArr}
       </div>

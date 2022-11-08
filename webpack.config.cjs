@@ -60,6 +60,15 @@ module.exports = {
     }
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    fallback: {
+      "fs": false
+    },
+    modules: ['app', 'node_modules'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.react.js'],
+    mainFields: [
+      'browser',
+      'jsnext:main',
+      'main',
+    ],
 },
 }

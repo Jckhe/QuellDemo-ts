@@ -1,3 +1,4 @@
 /quell-server
 queryexamples.txt
 node_modules/
+client/src/quell-client

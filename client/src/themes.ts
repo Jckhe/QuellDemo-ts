@@ -1,14 +1,35 @@
 import {createTheme} from '@mui/material/'  
+import { fontFamily } from '@mui/system'
 
 export const theme = createTheme({
+  typography: {
+    button: {
+      fontFamily: 'sofia-light'
+    },
+  },
+  transitions: {
+    duration: {
+      shortest: 150,
+      shorter: 200,
+      short: 250,
+      // most basic recommended timing
+      standard: 300,
+      // this is to be used in complex animations
+      complex: 375,
+      // recommended when something is entering screen
+      enteringScreen: 225,
+      // recommended when something is leaving screen
+      leavingScreen: 195,
+    },
+  },
   palette: {
     primary: {
-      main: '#ABA277  ',
-      light: '#44ccec',
-      dark: '#D5C395',
+      main: '#1876d1  ',
+      light: '#7cd0e9',
+      dark: '#4e90d6',
     },
     secondary: {
-      main: '#D5C395',
+      main: '#484f57',
     },
     // overrides: {
     //    MuiButton: {
