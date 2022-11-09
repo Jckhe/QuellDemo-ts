@@ -49,7 +49,6 @@ export function Graph({responseTimes}: GraphProps) {
 
 
   useEffect(() => {
-    console.log("response times: ", dataset)
   }, [responseTimes])
 
 
