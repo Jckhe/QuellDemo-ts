@@ -1,4 +1,4 @@
-const {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList, GraphQLID, buildSchema, GraphQLError} = require('graphql')
+const {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList, GraphQLID, buildSchema} = require('graphql')
 const {gql} = require('apollo-server');
 const { makeExecutableSchema } = require('@graphql-tools/schema')
 const Songs = require('../models/songsModel.js');
@@ -170,44 +170,6 @@ const RootMutations = new GraphQLObjectType({
         return song;
       }
     },
-    addAttraction: {
-      type: AttractionsType,
-      args: {name: {type: GraphQLString}, city: {type: GraphQLString}},
-      async resolve(parent, args) {
-        const checkCity = await Cities.findOne({name: args.city})
-        if (checkCity) {
-          const newAttraction = await Attractions.create({name: args.name, city: args.city})
-          return newAttraction;
-        }
-        //  else {
-        //   throw new GraphQLError(
-        //     `City not found in database, add city and country first.`,
-        //     {
-        //       code: "COST_LIMIT_EXCEEDED",
-        //       http: {status: 406}
-        //     })
-        // }
-      }
-    },
-    addCity: {
-      type: CityType,
-      args: {name: {type: GraphQLString}, country: {type: GraphQLString}},
-      async resolve(parent, args) {
-        const checkCountry = await Countries.findOne({name: args.country})
-        if (checkCountry) {
-          const newCity = await Cities.create({name: args.name, city: args.city})
-          return newCity;
-        }
-      }
-    },
-    addCountry: {
-      type: CountryType,
-      args: {name: {type: GraphQLString}},
-      async resolve(parent, args) {
-        const country = await Countries.create({name: args.name})
-        return country;
-      }
-    }
     // deleteSong {
     //   type: SongType,
     //   args: { name: {type: GraphQLString}},
