@@ -15,7 +15,7 @@ export function Demo() {
   const [ responseTimes, addResponseTimes ] = useState<number[]|[]>([])
 
   useEffect(() => {
-    console.log("why not render")
+    console.log("why not render tony sir")
   }, [responseTimes])
 
 
