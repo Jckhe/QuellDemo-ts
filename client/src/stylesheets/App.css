@@ -58,6 +58,7 @@ html {
     width: 90%;
   }
 
+
 }
 
 
@@ -144,15 +145,18 @@ body {
   transition: transform 0.15s linear;
 }
 
-
-.statusContainer {
+#alertDiv {
   position: fixed;
-  bottom: 0;
-  z-index: 5;
-  height: 20vh;
+  bottom: 3vh;
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: end;
+  z-index: 100;
+  left: 45%;
+  height: 70%;
+  width: 20vh;
+  margin-bottom: 0.1vh;
 }
 
 .demoContainer {
@@ -193,7 +197,6 @@ body {
   flex-direction: column;
   padding-right: 15px;
   padding-left: 10px;
-  border: 2px solid red;
 }
 
 /* this div is only to set a point on the HTML so we can scroll on click to the demo container */
@@ -268,6 +271,7 @@ body {
 }
 
 .monaco-editor-container {
+  margin-top: 1em;
   display: flex;
   justify-content: center;
   position: relative;

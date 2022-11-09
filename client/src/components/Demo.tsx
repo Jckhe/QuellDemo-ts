@@ -7,16 +7,15 @@ import demoHeader from '../assets/images/headers/QUELL-headers-demo w lines.svg'
 import { makeStyles } from '@mui/styles';
 import { ClassNames } from '@emotion/react';
 import { Graph } from './Graph';
+import { QueryStatus } from './Alert';
 import { Quellify, clearLokiCache } from '../quell-client/src/Quellify.js';
 
 
-export function Demo({toggleRenderStatus}: DemoProps) {
+export function Demo() {
   const [ responseTimes, addResponseTimes ] = useState<number[]|[]>([])
 
   useEffect(() => {
-    if (responseTimes.length > 1) {
-      toggleRenderStatus(true)
-    }
+    console.log("why not render")
   }, [responseTimes])
 
 
@@ -25,7 +24,7 @@ export function Demo({toggleRenderStatus}: DemoProps) {
       <div id="scroll-demo" className="scrollpoint"><img src={demoHeader} id="demo-header"/></div>
       <div className="demoContainer">
         {/* This div is to set a point slightly above the demo container for a natural scroll motion / point */}
-        <QueryDemo toggleRenderStatus={toggleRenderStatus} responseTimes={responseTimes} addResponseTimes={addResponseTimes} />
+        <QueryDemo responseTimes={responseTimes} addResponseTimes={addResponseTimes} />
         <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
         <div className="demoRight">
           <CacheControls />
@@ -33,11 +32,14 @@ export function Demo({toggleRenderStatus}: DemoProps) {
           <Graph responseTimes={responseTimes} />
         </div>
       </div>
+      {responseTimes.map((el, i) => {
+          return <QueryStatus key={i}/>
+        })}
     </div>
   )
 }
 
-function QueryDemo({toggleRenderStatus, responseTimes, addResponseTimes}: QueryDemoProps) {
+function QueryDemo({ responseTimes, addResponseTimes}: QueryDemoProps) {
   const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   const [ queryStatus, setQueryStatus ] = useState<number>(0);
   const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
@@ -52,7 +54,6 @@ function QueryDemo({toggleRenderStatus, responseTimes, addResponseTimes}: QueryD
       console.log('checking res ', res);
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
-      toggleRenderStatus(true)
       setResponse(JSON.stringify(res, null, 2))
     })
   }
@@ -64,7 +65,7 @@ function QueryDemo({toggleRenderStatus, responseTimes, addResponseTimes}: QueryD
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQuery} />
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
-      <div style={{width: '85%', border: '3px solid white', marginTop: -'2em', overflow: 'hidden', borderRadius: '15px'}}>
+      <div style={{width: '85%', border: '3px solid white', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '15px'}}>
         <div id="responseContainer" >
           <TextField
           multiline={true}
@@ -119,8 +120,8 @@ const CacheControls = () => {
   return (
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-        <Button sx={{ border: 1 }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
-        <Button href={"#demoContainer"} sx={{ border: 1 }} color="secondary" variant='contained'>Clear Server Cache</Button>
+        <Button sx={{ border: 1, textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.9rem' }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
+        <Button sx={{ border: 1, textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.9rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
       </Stack>
     </div>
   )
@@ -173,7 +174,6 @@ interface BasicSelectProps {
 interface QueryDemoProps {
   responseTimes: number[];
   addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
-  toggleRenderStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -184,7 +184,6 @@ interface requestData {
 
 
 interface DemoProps {
-  toggleRenderStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 //alert comp

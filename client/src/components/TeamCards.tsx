@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Linkedin from '../assets/images/icons/QUELL-icons-linkedin.svg';
 import Github from '../assets/images/icons/QUELL-icons-github.svg';
 
@@ -219,6 +219,16 @@ const TeamArr = [
 ]
 
 const Team = () => {
+  const [renderFx, toggleRenderFx] = useState<string>('unrendered');
+
+  //runs once on render, then procs the useState for rendered to change to renderedLogo
+  //these two strings are ID's in our CSS.
+  useEffect(() => {
+    setTimeout(() => {
+      toggleRenderFx('rendered')
+    }, 550);
+  }, [])
+
 	const teamCardsArr = [];
 	for (let i = 0; i < TeamArr.length; i++) {
 		let currTeamObj = TeamArr[i];
@@ -234,13 +244,13 @@ const Team = () => {
 		)
 	}
   return (
-    <>
+    <div id={renderFx}>
       <img id="team-quell" src={Header}></img>
       <h2>The Good Eggs of Quell</h2>
       <div id="team">
 			{teamCardsArr}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -4,6 +4,9 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const Songs = require('../models/songsModel.js');
 const Artist = require('../models/artistsModel.js');
 const Album = require('../models/albumsModel.js');
+const Attractions = require('../models/attractionsModel.js');
+const Cities = require('../models/citiesModel.js');
+const Countries = require('../models/countriesModel.js');
 
 
 
@@ -25,7 +28,6 @@ const ArtistType = new GraphQLObjectType({
 //create graphQL fragment
 
 
-
 const AlbumType = new GraphQLObjectType({
   name: 'Album',
   fields: () => ({
@@ -37,6 +39,56 @@ const AlbumType = new GraphQLObjectType({
       async resolve(parent, args) {
         const songList = await Songs.find({album: parent.name});
         return songList;
+      }
+    }
+  })
+})
+
+
+const AttractionsType = new GraphQLObjectType({
+  name: 'Attractions',
+  fields: () => ({
+    id: {type: GraphQLID},
+    name: { type: GraphQLString},
+    city: {type: GraphQLString},
+    country: {
+      type: CountryType,
+      async resolve(parent, args) {
+        const city = await Cities.findOne({city: parent.city});
+        const country = await Countries.findOne({country: city.country});
+        return country;;
+      }
+    }
+  })
+})
+
+const CityType = new GraphQLObjectType({
+  name: 'City',
+  fields: () => ({
+    id: {type: GraphQLID},
+    name: { type: GraphQLString},
+    country: { type: GraphQLString}, 
+    attractions: {
+      type: new GraphQLList(AttractionsType),
+      async resolve(parent, args) {
+        const attractions = await Attractions.find({city: parent.name});
+        return attractions;
+      }
+    }
+  })
+})
+
+
+const CountryType = new GraphQLObjectType({
+  name: 'Country',
+  fields: () => ({
+    id: {type: GraphQLID},
+    name: { type: GraphQLString},
+    cities: {
+      type: new GraphQLList(CityType),
+      async resolve(parent, args) {
+        const citiesList = await Cities.find({country: parent.name});
+        return citiesList;
       }
     }
   })
@@ -78,6 +130,30 @@ const RootQuery = new GraphQLObjectType({
       async resolve(parent, args) {
         const artist = await Artist.findOne({name: args.name})
         return artist;
+      }
+    },
+    country: {
+      type: CountryType,
+      args: {name: {type: GraphQLString}},
+      async resolve(parent, args) {
+        const country = await Countries.findOne({name: args.name})
+        return country;
+      }
+    },
+    city: {
+      type: CityType,
+      args: {name: {type: GraphQLString}},
+      async resolve(parent, args) {
+        const city = await Cities.findOne({name: args.name})
+        return city;
+      }
+    },
+    attractions: {
+      type: AttractionsType,
+      args: {name: {type: GraphQLString}},
+      async resolve(parent, args) {
+        const attractions = await Attractions.findOne({name: args.name})
+        return attractions;
       }
     }
   }

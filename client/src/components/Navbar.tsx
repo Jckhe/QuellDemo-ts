@@ -97,7 +97,7 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
         <DemoButton />
         <DocsButton />
       </Stack>
-      <Button onClick={() => {toggleRenderTeam(!teamComp)}} sx={{ border: 1 }} variant='contained'>Team</Button>
+      <Button onClick={() => {toggleRenderTeam(!teamComp)}} sx={{ border: 1 }} variant='contained'>{teamComp ? "Home" : "Team" }</Button>
     </AppBar>
   )
 }

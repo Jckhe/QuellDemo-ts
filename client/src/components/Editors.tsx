@@ -6,16 +6,6 @@ import { height } from "@mui/system";
 import { editor } from "monaco-editor";
 import {querySamples} from './helperFunctions'
 
-interface QueryEditorProps {
-  setQuery: React.Dispatch<React.SetStateAction<string>>;
-  selectedQuery: string;
-}
-
-interface ResponseEditorProps {
-  response: string
-}
-
-
 export const QueryEditor = ({setQuery, selectedQuery}: QueryEditorProps) => {
   
 
@@ -42,11 +32,6 @@ export const QueryEditor = ({setQuery, selectedQuery}: QueryEditorProps) => {
 };
 
 export const ResponseEditor = ({response}: ResponseEditorProps) => {
-  
-
-  // const onEditorChange = (value?: any,  ev?: editor.IModelContentChangedEvent): any => {
-  //   props.queryHandler(value);
-  // };
 
   return (
    <div className="monaco-editor-container" style={{marginTop: 10}} >
@@ -62,3 +47,13 @@ export const ResponseEditor = ({response}: ResponseEditorProps) => {
    </div>
   )
 };
+
+
+interface QueryEditorProps {
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
+  selectedQuery: string;
+}
+
+interface ResponseEditorProps {
+  response: string
+}

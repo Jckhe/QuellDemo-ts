@@ -61,7 +61,7 @@ export function Graph({responseTimes}: GraphProps) {
             {
               label: "Request",
               data: responseTimes,
-              backgroundColor: "rgba(53, 162, 235, 0.75)",
+              backgroundColor: "rgba(53, 162, 235,0.75)",
             },
           ],
         }}/>
