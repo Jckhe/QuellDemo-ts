@@ -28,7 +28,6 @@ import IdanMichael from "../assets/images/profile_pics/QUELL-headshot w border-I
 import SercanTuna from "../assets/images/profile_pics/QUELL-headshot w border-SercanTuna.png";
 import ThomasPryor from "../assets/images/profile_pics/QUELL-headshot w border-ThomasPryor.png";
 //import Alex, Cera, Jackie, Zoe here
-//import ZoeH from "../assessts/images/profile_pics/QUELL-headshot Zoe.png"
 
 
 /* 
