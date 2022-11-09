@@ -47,7 +47,7 @@ export function Graph({responseTimes}: GraphProps) {
     },
   };
 
-
+  //
   useEffect(() => {
   }, [responseTimes])
 
