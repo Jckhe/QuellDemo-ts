@@ -153,6 +153,7 @@ export default function QuerySelect({setQueryChoice, selectedQuery} : BasicSelec
           onChange={handleChange}
         >
           <MenuItem value={'2depth'}>2-Depth</MenuItem>
+          <MenuItem value={'3depth'}>3-Depth Country and Cities</MenuItem>
           <MenuItem value={'costly'}>Costly</MenuItem>
           <MenuItem value={'nested'}>Nested</MenuItem>
           <MenuItem value={'fragment'}>Fragment</MenuItem>
