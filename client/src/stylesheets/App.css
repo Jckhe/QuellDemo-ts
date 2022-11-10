@@ -97,13 +97,9 @@ body {
 
 #rendered {
   opacity: 1;
-  transition: all 1s ease-in-out;
+  transition: all 0.55s ease-in-out;
 }
 
-#unrendered {
-  opacity: 0;
-  transition: all 1s ease-in-out;
-}
 
 
 .main {
@@ -112,6 +108,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: 0;
 }
 
 
@@ -124,7 +121,7 @@ body {
 
 #renderedNav {
   opacity: 1;
-  transition: all 0.65s linear;
+  transition: all 1s linear;
 }
 
 
@@ -134,7 +131,7 @@ body {
   color: #4e90d6;
   filter: brightness(0) invert(1);
   position: relative;
-  transition: all 0.15s linear;
+  transition: all 0.75s ease-in-out;
   cursor: pointer;
 }
 
@@ -142,6 +139,12 @@ body {
   filter: invert(0);
   transform: rotate(10deg);
   transition: transform 0.15s linear;
+}
+
+#quell-bird-pick {
+  filter: invert(0);
+  transform: rotate(10deg);
+  transition: transform 0.35s ease-in-out;
 }
 
 #alertDiv {
@@ -370,7 +373,7 @@ h2 {
 
 
 .aboutContainer {
-  margin-top: 180px;
+  margin-top: 155px;
   width: 90%;
   gap: 50px;
   display: flex;
@@ -458,3 +461,44 @@ h2 {
   max-height: 25px;
   margin-left: 10px;
 }
+
+
+.getstartedContainer {
+  gap: 2.5px;
+}
+
+
+.getstartedContainer:hover {
+  gap: 50px;
+  transition: gap 0.5s ease-in-out;
+}
+
+#get-started-link:hover {
+  color: #1876d1;
+  cursor: pointer;
+}
+
+#getstarted-text:hover {
+  color: #1876d1;
+  cursor: pointer;
+}
+
+#feature5:hover #getstarted-text {
+  color: #1876d1;
+
+}
+
+#getstarted {
+  gap: 2.5px;
+  transition: gap 0.25s linear;
+}
+
+#feature5:hover #getstarted {
+  gap: 20px;
+  transition: gap 0.55s ease-in-out;
+}
+
+#feature5:hover .arrowicon {
+  color: #1876d1;
+}
+

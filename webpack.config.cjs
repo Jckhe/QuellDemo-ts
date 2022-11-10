@@ -59,10 +59,13 @@ module.exports = {
 			'/redis': 'http://localhost:3000/'
     }
   },
+  performance: {
+    hints: false
+  },
   resolve: {
     fallback: {
       "fs": false
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.react.js'],
-}
+},
 }

@@ -15,11 +15,32 @@ interface Navbar {
 
 export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
   const [ rendered, setRendered ] = useState<boolean>(false);
+  
 
   useEffect(() => {
     setRendered(true)
+    
   }, [])
 
+
+  const BirdLogo = () => {
+    const [ birdEffect, toggleBirdEffect ] = useState<string>('');
+
+    useEffect(() => {
+      setTimeout(() => {
+        toggleBirdEffect('quell-bird-pick')
+        setTimeout(() => {
+          toggleBirdEffect('')
+        }, 800);
+      }, 450);
+    }, [])
+
+    return (
+      <Box>
+        <img className="quell-bird-logo" id={birdEffect} src={quellBirdIcon} height="25px" width="30px"/>
+      </Box>
+    )
+  }
 
   //BUTTON HELPER COMPONENTS 
   const AboutButton = () => {
@@ -89,9 +110,7 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
     sx={{opacity: 0, minHeight: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '15px', paddingRight: '15px'}} 
     color="primary" position="fixed" elevation={20} >
       {/* For Quell Bird Logo */}
-      <Box>
-        <img className="quell-bird-logo" src={quellBirdIcon} height="25px" width="30px"/>
-      </Box>
+      <BirdLogo />
       {/* Navmenu buttons */}
       <Stack sx={{overflow: 'hidden'}}direction="row" className="navMenuContainer" justifyContent="center" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
         <AboutButton />

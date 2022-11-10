@@ -1,7 +1,4 @@
-import logo from '../assets/quell-logo.png';
-import { Dispatch, useEffect, useState, SetStateAction } from 'react';
 import quellBirdIcon from '../assets/images/quell_logos/QUELL-quail only.svg';
-import {AppBar} from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MediumIcon from '../assets/images/icons/medium-icon.png'
 import '../stylesheets/Navbar.css';

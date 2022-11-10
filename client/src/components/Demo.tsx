@@ -1,6 +1,6 @@
-import {Box, Divider, Stack, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography, Alert, Grow} from '@mui/material'
+import {Box, Divider, Stack, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from '@mui/material'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { QueryEditor, ResponseEditor } from './Editors'
+import { QueryEditor } from './Editors'
 import { querySamples } from './helperFunctions'
 import ForwardRoundedIcon from '@mui/icons-material/ForwardRounded';
 import demoHeader from '../assets/images/headers/QUELL-headers-demo w lines.svg'
@@ -53,7 +53,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemo
   function submitQuery() {
     console.log("Checking Query in Submit Query: ", typeof query)
     const startTime = (new Date()).getTime();
-    Quellify('http://localhost:3000/graphql', query)
+    Quellify('/graphql', query)
       .then(res => {
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);

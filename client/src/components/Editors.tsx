@@ -1,8 +1,5 @@
 import * as React from "react";
-import { TextField, Box, Button, Stack } from '@mui/material';
 import  ControlledEditor  from "@monaco-editor/react";
-import { SetStateAction, useState } from "react";
-import { height } from "@mui/system";
 import { editor } from "monaco-editor";
 import {querySamples} from './helperFunctions'
 

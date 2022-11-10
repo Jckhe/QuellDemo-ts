@@ -2,6 +2,8 @@ import quellBanner from '../assets/images/quell_logos/QUELL-nested.svg'
 import quellBirdIcon from '../assets/images/quell_logos/QUELL-quail only.svg';
 import EggOutlinedIcon from '@mui/icons-material/EggOutlined';
 import quellCacheSVG from '../assets/images/graphics/QUELL-illu-airmail_3.svg'
+import feather from '../assets/images/icons/feather.png'
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 
 
 export function About() {
@@ -52,6 +54,13 @@ export function About() {
               <span id="featureItemContent">Quell is more than happy to accept any contributions and tips from the open source community!</span>
             </div>
           </div>
+          <div style={{cursor: 'pointer'}} className="featureList" id="feature5">
+            <div style={{display: 'flex', cursor: 'pointer', alignItems: 'center', marginLeft:'2px', marginTop: '5px', fontSize: '1.2rem', zIndex: '500'}} id="getstarted" className="getstartedContainer">
+              <ArrowForwardRoundedIcon className='arrowicon' fontSize="large" />
+              <a id="get-started-link" style={{textDecoration: 'none', color: 'black'}} href="https://github.com/open-source-labs/Quell"><span style={{fontSize: '1.35rem'}} id="getstarted-text">Get Started!</span></a><br></br>
+            </div>
+          </div>
+          
         </div>
       </div>
       <div style={{position: 'relative'}}>

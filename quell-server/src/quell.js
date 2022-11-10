@@ -15,18 +15,18 @@ const defaultCostParams = {
 
 class QuellCache {
   // default expiry time is 14 days in milliseconds
-  constructor(schema, redisPort, cacheExpiration = 1209600000, costParameters = defaultCostParams) {
-    this.schema = schema;
-    this.costParameters = Object.assign(defaultCostParams, costParameters);
-    this.depthLimit = this.depthLimit.bind(this);
-    this.costLimit = this.costLimit.bind(this);
-    this.queryMap = this.getQueryMap(schema);
-    this.mutationMap = this.getMutationMap(schema);
-    this.fieldsMap = this.getFieldsMap(schema);
-    this.idMap = this.getIdMap();
-    this.cacheExpiration = cacheExpiration;
-    this.redisReadBatchSize = 10;
-    this.redisCache = redis.createClient({socket: {port: redisPort}});
+    constructor(schema, redisPort, cacheExpiration = 1209600000, costParameters = defaultCostParams) {
+      this.schema = schema;
+      this.costParameters = Object.assign(defaultCostParams, costParameters);
+      this.depthLimit = this.depthLimit.bind(this);
+      this.costLimit = this.costLimit.bind(this);
+      this.queryMap = this.getQueryMap(schema);
+      this.mutationMap = this.getMutationMap(schema);
+      this.fieldsMap = this.getFieldsMap(schema);
+      this.idMap = this.getIdMap();
+      this.cacheExpiration = cacheExpiration;
+      this.redisReadBatchSize = 10;
+      this.redisCache = redis.createClient({ socket: {port: redisPort, host: 'redis'}});
     this.query = this.query.bind(this);
     this.parseAST = this.parseAST.bind(this);
     this.clearCache = this.clearCache.bind(this);
