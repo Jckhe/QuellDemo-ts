@@ -9,7 +9,8 @@
     "start": "concurrently \"webpack-dev-server\" \"node ./server/server.js\"",
     "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -w"
+    "build": "webpack -w",
+    "docker": "docker compose up"
   },
   "browser": {
     "crypto": false,
