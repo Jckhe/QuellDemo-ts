@@ -14,37 +14,123 @@ export const querySamples: querySamples = {
     }
   }`,
 
-  'costly': `query {
-    artist(name: "Frank Ocean") {
+  '3depth': `query {
+    country(name: "United States") {
         id
         name
-        albums {
+        cities {
             id
-            name 
-            songs {
+            name
+            attractions {
                 id
                 name
-                artist {
+            }
+        }
+    }
+}`,
+
+  'costly': `query {
+    attractions(name: "Statue of Liberty") {
+        id
+        name
+    }
+    country(name: "Japan") {
+        id
+        name
+        cities {
+            id
+            name
+            attractions {
+                id
+                name
+            }
+        }
+    }
+    city(name: "Seattle") {
+        id
+        name
+        attractions {
+            id
+            name
+            country {
+                id
+                name
+                cities {
                     id
                     name
                 }
             }
         }
     }
-    song(name: "September") {
+}`, 
+'nested': `query {
+  country(name: "United States") {
+      id
+      name
+      cities {
+          id
+          name
+          attractions {
+              id
+              name
+              city
+              country {
+                  id
+                  cities
+                  {
+                      id
+                      name
+                      attractions {
+                          id
+                          city {
+                              id
+                              country {
+                                  id
+                                  name
+                                  cities {
+                                      id
+                                      name
+                                      country {
+                                          id
+                                          name
+                                          cities {
+                                              id
+                                              name
+                                              attractions {
+                                                  id
+                                                  name
+                                              }
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+              }
+          }
+      }
+  }
+}`,
+  'fragment': `query {
+    artist(name: "Frank Ocean") {
         id
-        name
-        album {
-            artist {
-                id
-                name
-                albums {
-                    songs {
-                        name
-                    }
-                }
-            }
+        albums {
+            ...getalbums
         }
     }
-}`, 
 }
+
+fragment getalbums on Album {
+    id
+    name
+}`,
+  'mutation': `mutation {
+    addCity(name: "San Diego", country: "United States") {
+        id
+        name
+    }
+}`
+}
+

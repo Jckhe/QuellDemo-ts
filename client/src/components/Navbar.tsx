@@ -1,6 +1,6 @@
 import logo from '../assets/quell-logo.png';
 import { Dispatch, useEffect, useState, SetStateAction } from 'react';
-import {Button, Stack, Divider, AppBar, Box, Fade, Slide, Typography, Hidden} from '@mui/material';
+import {Button, Stack, Divider, AppBar, Box, Fade, Slide, Typography, Hidden, Link} from '@mui/material';
 import '../stylesheets/Navbar.css';
 import quellBirdIcon from '../assets/images/quell_logos/QUELL-quail only.svg';
 import CodeTwoToneIcon from '@mui/icons-material/CodeTwoTone';
@@ -14,9 +14,7 @@ interface Navbar {
 }
 
 export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
-  const [ hover, setHover ] = useState<boolean>(false);
   const [ rendered, setRendered ] = useState<boolean>(false);
-
 
   useEffect(() => {
     setRendered(true)
@@ -44,7 +42,7 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
   
   const DemoButton = () => {
     const [hover, setHover] = useState<boolean>(false);
-    
+  
 
     return (
       <Button
@@ -67,15 +65,18 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
 
 
     return (
+      <Link sx={{ textDecoration: 'none'}} target="_blank" href="https://github.com/open-source-labs/Quell#quell" rel="noreferrer">
       <Button
-
+    
       onMouseEnter={()=> setHover(true)}
-      onMouseLeave={()=> setHover(false)}
-      href="#scroll-demo"      
+      onMouseLeave={()=> setHover(false)}    
       sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'>
-        <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography variant='button'>Docs</Typography></Slide>
-        <Slide direction="up"timeout={{enter: 400, exit: 100}} in={hover} mountOnEnter unmountOnExit><MenuBookRoundedIcon /></Slide>
-        </Button>
+       
+          <Slide direction="down" timeout={{enter: 200, exit: 250}} in={!hover} mountOnEnter unmountOnExit><Typography variant='button'>Docs</Typography></Slide>
+          <Slide direction="up"timeout={{enter: 200, exit: 100}} in={hover} mountOnEnter unmountOnExit><MenuBookRoundedIcon /></Slide>
+       
+      </Button>
+      </Link>
     )
   }
 

@@ -32,7 +32,7 @@ app.use(express.static("../dist"));
 
 //
 
-app.use('/graphql', quellCache.query, (req, res) => {
+app.use('/graphql', quellCache.costLimit, quellCache.query, (req, res) => {
   return res.status(200).send(res.locals.queryResponse);
 });
 

@@ -4,7 +4,8 @@ import { fontFamily } from '@mui/system'
 export const theme = createTheme({
   typography: {
     button: {
-      fontFamily: 'sofia-light'
+      fontFamily: 'sofia-light',
+      cursor: 'pointer'
     },
   },
   transitions: {

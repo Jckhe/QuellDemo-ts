@@ -1,6 +1,4 @@
 const {GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList, GraphQLID, buildSchema, GraphQLError} = require('graphql')
-const {gql} = require('apollo-server');
-const { makeExecutableSchema } = require('@graphql-tools/schema')
 const Songs = require('../models/songsModel.js');
 const Artist = require('../models/artistsModel.js');
 const Album = require('../models/albumsModel.js');
@@ -179,14 +177,14 @@ const RootMutations = new GraphQLObjectType({
           const newAttraction = await Attractions.create({name: args.name, city: args.city})
           return newAttraction;
         }
-        //  else {
-        //   throw new GraphQLError(
-        //     `City not found in database, add city and country first.`,
-        //     {
-        //       code: "COST_LIMIT_EXCEEDED",
-        //       http: {status: 406}
-        //     })
-        // }
+         else {
+          throw new Error(
+            `City not found in database, add city and country first.`,
+            {
+              code: "COST_LIMIT_EXCEEDED",
+              http: {status: 406}
+            })
+        }
       }
     },
     addCity: {

@@ -1,5 +1,4 @@
 html {
-  height: 100%;
   margin: auto;
   height: 100vh;
   scroll-behavior: smooth;
@@ -181,6 +180,10 @@ body {
   height: 10%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+  color: rgb(53, 49, 49);
+  font-weight: bolder;
 }
 
 .graphContainer {
@@ -439,3 +442,19 @@ h2 {
   opacity: .5;
 }
 
+.footerContainer {
+  min-height: 60px;
+  max-height: 60px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  background-color: #1876d1;
+  color: #FFF;
+  padding: 0px 10px;
+}
+
+.medium-icon {
+  max-height: 25px;
+  margin-left: 10px;
+}

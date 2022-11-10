@@ -2,15 +2,14 @@
   "name": "mockserver",
   "version": "1.0.0",
   "description": "",
-  "module": "module",
+  "mode": "production",
   "proxy": "http://localhost:3000",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -w production",
-    "clear-cache": "node quell-server/bin/clearCache.js"
+    "build": "webpack -w"
   },
   "browser": {
     "crypto": false,

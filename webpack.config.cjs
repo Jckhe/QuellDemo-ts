@@ -2,8 +2,8 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './client/src/index.tsx', 
-
+  entry: path.resolve(__dirname, './client/src/index.tsx'), 
+  mode: 'production',
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js'
@@ -63,12 +63,6 @@ module.exports = {
     fallback: {
       "fs": false
     },
-    modules: ['app', 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.react.js'],
-    mainFields: [
-      'browser',
-      'jsnext:main',
-      'main',
-    ],
-},
+}
 }

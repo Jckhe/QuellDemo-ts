@@ -40,9 +40,9 @@ export function About() {
           </div>
           <div className="featureList" id="feature4">
             <EggOutlinedIcon className="eggIcon" fontSize="large" color="primary"/>
-            <div id="featureItem">
+            <div  id="featureItem">
               <span id="featureItemHeading">Query Monitoring + Cache View Devtool</span><br></br>
-              <span id="featureItemContent">Our dev tool contains all the metrics and utilities that a graphQL developer would need from query monitoring metrics to server cache data. Download our dev tool from the official chrome store now! </span>
+              <span id="featureItemContent">Our dev tool contains all the metrics and utilities that a graphQL developer would need from query monitoring metrics to server cache data. <a style={{textDecoration: 'none', color: 'darkblue', fontSize: '.88rem'}} href="https://chrome.google.com/webstore/detail/quell-developer-tool/jnegkegcgpgfomoolnjjkmkippoellod">Download the dev tool from the official chrome store now!</a></span>
             </div>
           </div>
           <div className="featureList" id="feature5">

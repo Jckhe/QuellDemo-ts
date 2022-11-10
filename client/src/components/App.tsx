@@ -1,11 +1,10 @@
 import '../stylesheets/App.css'
-import React, { useState, useEffect } from 'react';
-import {Button, Stack, Divider, Fade, Alert} from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
 import { Navbar } from './Navbar';
 import { Demo } from './Demo';
 import { About } from './About';
-import { QueryStatus } from './Alert';
-import Team from './TeamCards'
+import Team from './TeamCards';
+import { Footer } from './Footer';
 
 
 function App() {
@@ -26,10 +25,12 @@ function App() {
     <>
       <Navbar teamComp={teamComp} toggleRenderTeam={toggleRenderTeam} />
       {/* conditionally renders between the team page and the main page. */}
-      {teamComp ? <Team/> : <div className="main" id={`${renderFx}`}>
-          <About />
-          <Demo/>
-      </div>}
+        {teamComp && <Team />}
+        <div className="main" id={`${renderFx}`}>
+        {!teamComp && <About />}
+        {!teamComp && <Demo />}
+      </div>
+      <Footer />
     </>
   )
 }

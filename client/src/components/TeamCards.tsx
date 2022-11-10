@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import Linkedin from '../assets/images/icons/QUELL-icons-linkedin.svg';
 import Github from '../assets/images/icons/QUELL-icons-github.svg';
 
-
 import Header from "../assets/images/headers/QUELL-team quell-2color_1.svg";
 import Nick from "../assets/images/profile_pics/QUELL-headshot w border-Nick.png";
 import Mike from "../assets/images/profile_pics/QUELL-headshot w border-Mike.png";
@@ -27,12 +26,43 @@ import DavidLopez from "../assets/images/profile_pics/QUELL-headshot w border-Da
 import IdanMichael from "../assets/images/profile_pics/QUELL-headshot w border-IdanMichael.png";
 import SercanTuna from "../assets/images/profile_pics/QUELL-headshot w border-SercanTuna.png";
 import ThomasPryor from "../assets/images/profile_pics/QUELL-headshot w border-ThomasPryor.png";
-//import Alex, Cera, Jackie, Zoe here
-
+import ZoeH from "../assets/images/profile_pics/QUELL-headshot ZoeH.png"
+import JackieHe from "../assets/images/profile_pics/QUELL-headshot JackieHe.png"
+import CeraB from "../assets/images/profile_pics/QUELL-headshot CeraB.png"
+import AlexMartinez from "../assets/images/profile_pics/QUELL-headshot AlexM.png"
 
 /* 
   Reusable component to generate each team member
 */
+
+const CERABARROW = {
+  name: 'Cera Barrow',
+  src: CeraB,
+  bio: 'Cera is a full-stack developer specializing in React and Node with a passion for combining efficiency with style. She lives in Seattle with her four Gameboy Advances on the off-chance that anyone wants to come over and play Final Fantasy: Crystal Chronicles.',
+  linkedin: 'http://www.linkedin.com/in/cerabarrow/',
+  github: 'https://github.com/cerab',
+};
+const JACKIEHE = {
+  name: 'Jackie He',
+  src: JackieHe,
+  bio: "Jackie is a full-stack software engineer with experience in React, Material UI, and graphQL. His goal with Quell was to create a tool that would optimize both performance and security for graphQL developers. In his free time, he loves quickscoping on COD and grinding woodcutting on Runescape.",
+  linkedin: 'https://www.linkedin.com/in/jackie-he/',
+  github: 'https://github.com/Jckhe',
+};
+const ALEXANDERMARTINEZ = {
+  name: 'Alexander Martinez',
+  src: AlexMartinez,
+  bio: 'Alexander is a full-stack software engineer specializing in React, Node.js, and GraphQL. He is passionate about creating efficiencies in data fetching, creating meaningful products, and contributing to the open-source community. In his off time, he enjoys playing Dota 2, rock climbing, playing with his cavapoo named Basil, and trying new sushi restaurants.',
+  linkedin: 'https://www.linkedin.com/in/alexander-martinez415/', 
+  github: 'https://github.com/alexmartinez123'
+};
+const ZOEHARPER = {
+  name: 'Zoe Harper',
+  src: ZoeH,
+  bio: 'Zoe is a full-stack software engineer with a passion for all things JavaScript. She desired Quell to be a viable and modern product and worked hard to migrate dependencies and fix logic. In her spare time she is huge ARPG nerd.',
+  linkedin: 'https://www.linkedin.com/in/harperzoe/',
+  github: 'https://github.com/ContraireZoe',
+};
 const DAVIDLOPEZ = {
   name: "David Lopez",
   src: DavidLopez,
@@ -195,9 +225,14 @@ const JUSTINJAEGAR = {
   github: "https://github.com/justinjaeger",
 };
 const TeamArr = [
+  JACKIEHE,
+  ALEXANDERMARTINEZ,
+  CERABARROW,
+  ZOEHARPER,
 	DAVIDLOPEZ, 
 	IDANMICHAEL, 
 	SERCANTUNA, 
+  THOMASPRYOR,
 	ROBERTHOWTON, 
 	CHANGCAI, 
 	JOSHJORDAN, 
@@ -215,18 +250,27 @@ const TeamArr = [
 	XIAOYUOMEARA,
 	NICKKRUCKENBERG,
 	MIKELAURI,
-	ROBNOBILE
+	ROBNOBILE,
+  JUSTINJAEGAR
 ]
 
 const Team = () => {
   const [renderFx, toggleRenderFx] = useState<string>('unrendered');
 
-  //runs once on render, then procs the useState for rendered to change to renderedLogo
-  //these two strings are ID's in our CSS.
+  // runs once on render, then procs the useState for rendered to change to renderedLogo
+  // these two strings are ID's in our CSS.
   useEffect(() => {
     setTimeout(() => {
       toggleRenderFx('rendered')
     }, 550);
+    
+  }, [])
+
+  //scrolls back to top
+  useEffect(() => {
+    if (window.location.href.includes('scroll-demo')) {
+      window.scrollTo(0, 0)
+    }
   }, [])
 
 	const teamCardsArr = [];
@@ -234,6 +278,7 @@ const Team = () => {
 		let currTeamObj = TeamArr[i];
 		teamCardsArr.push(<article className="TeamCard">
         <TeamMember
+          key={i}
           src={currTeamObj.src}
           bio={currTeamObj.bio}
           name={currTeamObj.name}
@@ -254,8 +299,15 @@ const Team = () => {
   );
 };
 
-const TeamMember = (props) => {
-  const { src, bio, name, linkedin, github } = props;
+interface TeamMember {
+  src: string,
+  bio: string,
+  name: string,
+  linkedin: string,
+  github: string 
+}
+
+const TeamMember = ({src, bio, name, linkedin, github}: TeamMember) => {
 
   return (
     <div className="profile-pics">
