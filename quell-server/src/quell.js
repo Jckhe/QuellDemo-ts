@@ -1,4 +1,5 @@
-const redis = require('redis');
+
+const redis = require('ioredis');
 const { parse } = require('graphql/language/parser');
 const { visit, BREAK } = require('graphql/language/visitor');
 const { graphql } = require('graphql');
@@ -12,7 +13,7 @@ const defaultCostParams = {
   depthMax: 10 //depth limit parameter
 }
 
-
+// redis.createClient({ socket: {port: redisPort, host: 'redis-13680.c8.us-east-1-3.ec2.cloud.redislabs.com', password: '6uVbPwQU1rWm9cScHQU8YasjZ2lHeO8qn!'}});
 class QuellCache {
   // default expiry time is 14 days in milliseconds
     constructor(schema, redisPort, cacheExpiration = 1209600000, costParameters = defaultCostParams) {
@@ -26,7 +27,11 @@ class QuellCache {
       this.idMap = this.getIdMap();
       this.cacheExpiration = cacheExpiration;
       this.redisReadBatchSize = 10;
-      this.redisCache = redis.createClient({ socket: {port: redisPort, host: 'redis-13680.c8.us-east-1-3.ec2.cloud.redislabs.com', password: '6uVbPwQU1rWm9cScHQU8YasjZ2lHeO8q!'}});
+      this.redisCache = new redis({
+        host: 'redis-13680.c8.us-east-1-3.ec2.cloud.redislabs.com',
+        port: 13680,
+        password: '6uVbPwQU1rWm9cScHQU8YasjZ2lHeO8q'
+    });
     this.query = this.query.bind(this);
     this.parseAST = this.parseAST.bind(this);
     this.clearCache = this.clearCache.bind(this);

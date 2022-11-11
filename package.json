@@ -9,7 +9,7 @@
     "start": "node ./server/server.js",
     "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "build": "webpack --mode production",
     "docker": "docker compose up"
   },
   "browser": {
@@ -47,6 +47,7 @@
     "express": "^4.18.2",
     "file-loader": "^6.2.0",
     "graphql": "^16.6.0",
+    "ioredis": "^5.2.4",
     "lokijs": "^1.5.12",
     "monaco-editor": "^0.34.1",
     "mongoose": "^6.7.0",
