@@ -16,7 +16,7 @@ const defaultCostParams = {
 
 class QuellCache {
   // default expiry time is 14 days in milliseconds
-    constructor(schema, redisPort, redisHost, cacheExpiration = 1209600000, costParameters = defaultCostParams) {
+    constructor(schema, redisPort, cacheExpiration = 1209600000, costParameters = defaultCostParams) {
       this.schema = schema;
       this.costParameters = Object.assign(defaultCostParams, costParameters);
       this.depthLimit = this.depthLimit.bind(this);
