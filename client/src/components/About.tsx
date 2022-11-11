@@ -37,7 +37,7 @@ export function About() {
             <EggOutlinedIcon className="eggIcon" fontSize="large" color="primary"/>
             <div id="featureItem">
               <span id="featureItemHeading">Simple and Easy Installation + Detailed Documentation</span><br></br>
-              <span id="featureItemContent">Quell prizes itself on being lightweight and simple. Use Quell alongside with our in-depth documentation to simplify things so you can get started on working ASAP!</span>
+              <span id="featureItemContent">Quell prides itself on being lightweight and simple. Use Quell alongside with our in-depth documentation to simplify things so you can get started on working ASAP!</span>
             </div>
           </div>
           <div className="featureList" id="feature4">
