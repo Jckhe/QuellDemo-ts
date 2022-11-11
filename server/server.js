@@ -15,7 +15,7 @@ app.use(cors());
 
 
 mongoose
-  .connect("mongodb+srv://quello:quello@cluster0.t8iquko.mongodb.net/?retryWrites=true&w=majority",
+  .connect(process.env.MONGO_URI,
   { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to BongoDB'))
   .catch(err => console.log(err))
