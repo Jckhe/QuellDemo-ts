@@ -26,7 +26,7 @@ class QuellCache {
       this.idMap = this.getIdMap();
       this.cacheExpiration = cacheExpiration;
       this.redisReadBatchSize = 10;
-      this.redisCache = redis.createClient({ socket: {port: redisPort, host: 'redis-13680.c8.us-east-1-3.ec2.cloud.redislabs.com'}});
+      this.redisCache = redis.createClient({ socket: {port: redisPort, host: 'redis-13680.c8.us-east-1-3.ec2.cloud.redislabs.com', password: 'Quelloworld123!'}});
     this.query = this.query.bind(this);
     this.parseAST = this.parseAST.bind(this);
     this.clearCache = this.clearCache.bind(this);
