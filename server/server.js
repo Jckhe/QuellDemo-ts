@@ -47,6 +47,6 @@ app.use('/redis', quellCache.getRedisInfo({
 }));
 
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}...`);
 });
