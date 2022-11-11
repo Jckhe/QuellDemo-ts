@@ -13,9 +13,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors());
 
-console.log("Checking ENV Variable Redis: " + process.env.REDISCLOUD_URL)
-console.log("Checking ENV Variable Redis PW: " + process.env.REDIS_PASSWORD)
-console.log("Checking ENV Variable Redis PW: " + typeof process.env.REDIS_PASSWORD)
 
 
 mongoose
