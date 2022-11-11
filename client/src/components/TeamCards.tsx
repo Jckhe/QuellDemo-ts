@@ -271,6 +271,7 @@ const Team = () => {
     if (window.location.href.includes('scroll-demo')) {
       window.scrollTo(0, 0)
     }
+    window.scrollTo(0, 0)
   }, [])
 
 	const teamCardsArr = [];
