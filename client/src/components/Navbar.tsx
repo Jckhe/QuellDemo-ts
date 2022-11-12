@@ -50,6 +50,7 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
 
     return (
       <Button
+      onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
       onMouseEnter={()=> setHover(true)}
       onMouseLeave={()=> setHover(false)}
       href="#scroll-about" sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'>
@@ -67,6 +68,7 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
 
     return (
       <Button
+      onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
       onMouseEnter={()=> setHover(true)}
       onMouseLeave={()=> setHover(false)}
       href="#scroll-demo"      
