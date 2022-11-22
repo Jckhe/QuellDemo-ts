@@ -17,7 +17,7 @@ export function Footer() {
       </div>
       <div className="footer-links">
         <a href="https://github.com/open-source-labs/Quell"><GitHubIcon sx={{color: 'black'}} /></a>
-        <a href="medium-article-placeholder"><img className="medium-icon" src={MediumIcon}/></a>
+        <a href="https://medium.com/@cera.barrow/introducing-quell-5-0-a-more-secure-quell-70ba6bbfd5d4"><img className="medium-icon" src={MediumIcon}/></a>
       </div>
     </div>
   )
