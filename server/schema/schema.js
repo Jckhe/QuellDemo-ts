@@ -7,6 +7,10 @@ const Cities = require('../models/citiesModel.js');
 const Countries = require('../models/countriesModel.js');
 
 
+//TYPE DEFS
+//THIS IS JUST ALL MOCK DATA AND MOCK TYPES
+//ALTERNATIVELY IN THE RESOLVER CHOOSE THE DB OF YOUR LIKING
+//WE USED MONGODB FOR TESTING PURPOSES BUT PSQL MAYBE BETTER!
 
 const ArtistType = new GraphQLObjectType({
   name: 'Artist',
@@ -23,7 +27,6 @@ const ArtistType = new GraphQLObjectType({
   })
 })
 
-//create graphQL fragment
 
 
 const AlbumType = new GraphQLObjectType({
@@ -206,11 +209,6 @@ const RootMutations = new GraphQLObjectType({
         return country;
       }
     }
-    // deleteSong {
-    //   type: SongType,
-    //   args: { name: {type: GraphQLString}},
-    //   async resolve(parent, args) {
-    // }
 }
 })
 
@@ -224,84 +222,3 @@ module.exports = new GraphQLSchema({
   mutation: RootMutations,
   types: [ArtistType, AlbumType, SongType]
 })
-
-
-
-
-
-// const typeDefs = `
-//   type Artist {
-//     id: ID!
-//     name: String!
-//     songs: [Song!]
-//     albums: [Album!]
-//   }
-
-//   type Album {
-//     id: ID!
-//     name: String!
-//     artist: String!
-//     songs: [Song!]
-//   }
-
-//   type Song {
-//     id: ID!
-//     name: String!
-//     artist: Artist
-//     albums: Album
-//   }
-
-//   type Query {
-//     artist(name: String): Artist
-//     album(name: String): Album
-//     song(name: String): Song
-//   }
-
-// `
-
-// const resolvers = {
-//   Query: {
-//     artist: async(parent, args, context, info) => {
-//       const artist = await Artist.findOne({name: args.name});
-//       return artist;
-//     },
-//     album: async(parent, args, context, info) => {
-//       const album = await Album.findOne({name: args.name});
-//       return album;
-//     },
-//     song: async(parent, args, context, info) => {
-//       const song = await Songs.findOne({name: args.name});
-//       return song;
-//     }
-//   },
-//   Artist: {
-//     songs: async(parent, args, context, info) => {
-//       const songsList = await Songs.find({artist: parent.name});
-//         return songsList;
-//     },
-//     albums: async(parent, args, context, info) => {
-//       const albumList = await Songs.find({artist: parent.name});
-//       return albumList;
-//     }
-//   },
-//   Album: {
-//     songs: async(parent, args, context, info) => {
-//       const songsList = await Songs.find({album: parent.name});
-//       return songsList;
-//     }
-//   },
-//   Song: {
-//     artist: async(parent, args, context, info) => {
-//       const artist = await Artist.findOne({name: parent.artist});
-//       return artist;
-//     },
-//     albums: async(parent, args, context, info) => {
-//       const album = await Album.findOne({name: parent.album});
-//       return album;
-//   }
-// }
-// }
-
-// const schema = makeExecutableSchema({ typeDefs, resolvers })
-
-// module.exports = {schema}
