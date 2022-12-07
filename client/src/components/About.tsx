@@ -4,9 +4,10 @@ import EggOutlinedIcon from '@mui/icons-material/EggOutlined';
 import quellCacheSVG from '../assets/images/graphics/QUELL-illu-airmail_3.svg'
 import feather from '../assets/images/icons/feather.png'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { memo } from 'react';
 
 
-export function About() {
+const About = memo(() => {
   return (
     <div id="about" className="aboutContainer">
       <div id="scroll-about" ></div>
@@ -68,4 +69,6 @@ export function About() {
       </div>
     </div>
   )
-}
+})
+
+export default About;

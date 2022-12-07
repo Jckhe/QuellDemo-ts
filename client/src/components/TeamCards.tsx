@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import Linkedin from '../assets/images/icons/QUELL-icons-linkedin.svg';
 import Github from '../assets/images/icons/QUELL-icons-github.svg';
 
@@ -254,7 +254,7 @@ const TeamArr = [
   JUSTINJAEGAR
 ]
 
-const Team = () => {
+const Team = memo(() => {
   const [renderFx, toggleRenderFx] = useState<string>('unrendered');
 
   // runs once on render, then procs the useState for rendered to change to renderedLogo
@@ -274,10 +274,15 @@ const Team = () => {
     window.scrollTo(0, 0)
   }, [])
 
-	const teamCardsArr = [];
-	for (let i = 0; i < TeamArr.length; i++) {
-		let currTeamObj = TeamArr[i];
-		teamCardsArr.push(<article className="TeamCard">
+
+  return (
+    <div id={renderFx}>
+      <img id="team-quell" src={Header}></img>
+      <h2>The Good Eggs of Quell</h2>
+      <div id="team">
+			{TeamArr.map((currTeamObj: any, i:number) => {
+        return (
+          <article key={i} className="TeamCard">
         <TeamMember
           key={i}
           src={currTeamObj.src}
@@ -287,18 +292,12 @@ const Team = () => {
           github={currTeamObj.github}
         />
       </article>
-		)
-	}
-  return (
-    <div id={renderFx}>
-      <img id="team-quell" src={Header}></img>
-      <h2>The Good Eggs of Quell</h2>
-      <div id="team">
-			{teamCardsArr}
+        )
+      })}
       </div>
     </div>
   );
-};
+})
 
 interface TeamMember {
   src: string,

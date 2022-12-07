@@ -2,8 +2,9 @@ import quellBirdIcon from '../assets/images/quell_logos/QUELL-quail only.svg';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MediumIcon from '../assets/images/icons/medium-icon.png'
 import '../stylesheets/Navbar.css';
+import { memo } from 'react';
 
-export function Footer() {
+const Footer = memo(() => {
 
 
 
@@ -21,4 +22,6 @@ export function Footer() {
       </div>
     </div>
   )
-}
+})
+
+export default Footer;

@@ -1,10 +1,11 @@
 import '../stylesheets/App.css'
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Navbar } from './Navbar';
-import { Demo } from './Demo';
-import { About } from './About';
-import Team from './TeamCards';
-import { Footer } from './Footer';
+import Demo from './Demo';
+import  About  from './About';
+import Footer from './Footer';
+const LazyLoadTeam = React.lazy(() => import('./TeamCards'))
+
 
 
 function App() {
@@ -17,13 +18,18 @@ function App() {
     toggleRenderFx('rendered')
   }, [])
 
+  useEffect(() => {
+
+  }, [teamComp])
 
 
   return (
     <>
       <Navbar teamComp={teamComp} toggleRenderTeam={toggleRenderTeam} />
       {/* conditionally renders between the team page and the main page. */}
-        {teamComp && <Team />}
+        <Suspense fallback={<div>Loading..</div>}>
+          {teamComp ? <LazyLoadTeam /> : null}
+        </Suspense>
         <div className="main" id={renderFx}>
         {!teamComp && <About />}
         {!teamComp && <Demo />}

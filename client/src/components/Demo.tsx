@@ -1,5 +1,5 @@
 import {Box, Divider, Stack, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from '@mui/material'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, memo, SetStateAction, useEffect, useState } from 'react'
 import { QueryEditor } from './Editors'
 import { querySamples } from './helperFunctions'
 import ForwardRoundedIcon from '@mui/icons-material/ForwardRounded';
@@ -11,8 +11,7 @@ import { styled } from '@mui/material/styles';
 
 
 
-
-export function Demo() {
+const Demo = memo(() => {
   const [ responseTimes, addResponseTimes ] = useState<number[]|[]>([])
   const [ errorAlerts, addErrorAlerts ] = useState<number[]>([]);
 
@@ -42,7 +41,7 @@ export function Demo() {
         })}
     </div>
   )
-}
+});
 
 function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemoProps) {
   const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
@@ -201,3 +200,6 @@ interface QueryDemoProps {
 }
 
 
+
+
+export default Demo;
