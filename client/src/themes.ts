@@ -25,7 +25,7 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#1876d1  ',
+      main: '#e4e4e4',
       light: '#7cd0e9',
       dark: '#4e90d6',
     },
@@ -38,7 +38,7 @@ export const theme = createTheme({
     //       color: '',
     // },
     background: {
-      default: '#e4e4e4',
+      default: '#b6a9a6',
       paper: '#bdbdbd',
     },
     error: {
@@ -48,4 +48,29 @@ export const theme = createTheme({
       main: '#48aa4c',
     },
   },
+  // palette: {
+  //   primary: {
+  //     main: '#1876d1  ',
+  //     light: '#7cd0e9',
+  //     dark: '#4e90d6',
+  //   },
+  //   secondary: {
+  //     main: '#484f57',
+  //   },
+  //   // overrides: {
+  //   //    MuiButton: {
+  //   //     raisedPrimary: {
+  //   //       color: '',
+  //   // },
+  //   background: {
+  //     default: '#e4e4e4',
+  //     paper: '#bdbdbd',
+  //   },
+  //   error: {
+  //     main: '#ff5243',
+  //   },
+  //   success: {
+  //     main: '#48aa4c',
+  //   },
+  // },
 })

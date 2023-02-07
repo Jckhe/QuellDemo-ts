@@ -14,7 +14,7 @@ const Footer = memo(() => {
         <img height="25px" width="30px" className="quell-bird-logo" src={quellBirdIcon}/>
       </div>
       <div className="footer-text">
-      <h1 style={{fontSize: '18px'}}>{'\u00A9'}2020 Quell | MIT License</h1>
+      <h1 style={{fontSize: '18px'}}>{'\u00A9'}2023 Quell | MIT License</h1>
       </div>
       <div className="footer-links">
         <a href="https://github.com/open-source-labs/Quell"><GitHubIcon sx={{color: 'black'}} /></a>

@@ -51,11 +51,13 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
     return (
       <Button
       onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
-      onMouseEnter={()=> setHover(true)}
-      onMouseLeave={()=> setHover(false)}
-      href="#scroll-about" sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'>
-        <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography sx={{ position: 'relative'}} variant='button'>About</Typography></Slide>
-        <Slide direction="up"timeout={{enter: 400, exit: 100}} in={hover} mountOnEnter unmountOnExit><Groups2RoundedIcon /></Slide>
+      // onMouseEnter={()=> setHover(true)}
+      // onMouseLeave={()=> setHover(false)}
+      href="#scroll-about" 
+      sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'
+      >
+      //   <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography sx={{ position: 'relative'}} variant='button'>About</Typography></Slide>
+      //   <Slide direction="up"timeout={{enter: 400, exit: 100}} in={hover} mountOnEnter unmountOnExit><Groups2RoundedIcon /></Slide>
         </Button>
     )
   }
@@ -69,8 +71,8 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
     return (
       <Button
       onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
-      onMouseEnter={()=> setHover(true)}
-      onMouseLeave={()=> setHover(false)}
+      // onMouseEnter={()=> setHover(true)}
+      // onMouseLeave={()=> setHover(false)}
       href="#scroll-demo"      
       sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center'}} color="secondary" variant='contained'>
         <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography sx={{ position: 'relative'}} variant='button'>Demo</Typography></Slide>
@@ -91,8 +93,8 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
       <Link sx={{ textDecoration: 'none'}} target="_blank" href="https://github.com/open-source-labs/Quell#quell" rel="noreferrer">
       <Button
     
-      onMouseEnter={()=> setHover(true)}
-      onMouseLeave={()=> setHover(false)}    
+      // onMouseEnter={()=> setHover(true)}
+      // onMouseLeave={()=> setHover(false)}    
       sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'>
        
           <Slide direction="down" timeout={{enter: 200, exit: 250}} in={!hover} mountOnEnter unmountOnExit><Typography variant='button'>Docs</Typography></Slide>
@@ -119,7 +121,13 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
         <DemoButton />
         <DocsButton />
       </Stack>
-      <Button onClick={() => {toggleRenderTeam(!teamComp)}} sx={{ border: 1 }} variant='contained'>{teamComp ? "Home" : "Team" }</Button>
+      {/* <button className={'teamBtn'} onClick={() => {toggleRenderTeam(!teamComp)}}>{teamComp ? "Home" : "Team" }</button> */}
+      <Button 
+        onClick={() => {toggleRenderTeam(!teamComp)}} 
+        sx={{boxShadow: 'none'}} 
+        variant='contained'
+        >{teamComp ? "Home" : "Team" }
+      </Button>
     </AppBar>
   )
 }
