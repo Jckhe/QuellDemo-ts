@@ -5,6 +5,7 @@ import { querySamples } from './helperFunctions'
 import ForwardRoundedIcon from '@mui/icons-material/ForwardRounded';
 import demoHeader from '../assets/images/headers/QUELL-headers-demo w lines.svg'
 import { Graph } from './Graph';
+import { HitMiss } from './HitMiss'
 import { SuccessfulQuery, BadQuery } from './Alert';
 import { Quellify, clearLokiCache } from '../quell-client/src/Quellify.js';
 import { styled } from '@mui/material/styles';
@@ -21,16 +22,17 @@ const Demo = memo(() => {
 
 
   return (
-    <div style={{width: '100%', flexDirection: 'column', justifyContent: 'center'}}>
+    <div style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center'}}>
       <div id="scroll-demo" className="scrollpoint"><img src={demoHeader} id="demo-header"/></div>
       <div className="demoContainer">
         {/* This div is to set a point slightly above the demo container for a natural scroll motion / point */}
-        <QueryDemo addErrorAlerts={addErrorAlerts} responseTimes={responseTimes} addResponseTimes={addResponseTimes} />
+        <QueryDemo addErrorAlerts={addErrorAlerts} responseTimes={responseTimes} addResponseTimes={addResponseTimes}  />
         <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
         <div className="demoRight">
           <CacheControls />
           <Divider orientation="horizontal" />
           <Graph responseTimes={responseTimes} />
+          
         </div>
       </div>
       {responseTimes.map((el, i) => {
@@ -43,10 +45,12 @@ const Demo = memo(() => {
   )
 });
 
-function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemoProps) {
+function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemoProps, {}) {
   const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
+  const [ cacheHit, setCacheHit ] = useState<number>(0);
+  const [ cacheMiss, setCacheMiss ] = useState<number>(0);
   
 
   function submitQuery() {
@@ -54,9 +58,17 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemo
     const startTime = (new Date()).getTime();
     Quellify('/graphql', query)
       .then(res => {
+        // console.log('res[0]:', res[0])
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
-      setResponse(JSON.stringify(res, null, 2))
+      setResponse(JSON.stringify(res[0], null, 2));
+
+      if (res[1] === false) {
+        setCacheMiss(cacheMiss + 1);
+        
+      } else if (res[1] === true) {
+        setCacheHit(cacheHit + 1);
+      }
     })
       .catch((err) => {
         console.log("Error in fetch: ", err)
@@ -71,7 +83,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemo
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQuery} />
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
-      <div style={{width: '85%', border: '3px solid white', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '15px'}}>
+      {/* <div style={{width: '85%', border: '3px solid white', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '15px'}}> 
         <div id="responseContainer" >
           <TextField
           multiline={true}
@@ -83,6 +95,9 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemo
           >
           </TextField>
         </div>
+      </div> */}
+      <div id="hitMiss">
+        <HitMiss cacheHit={cacheHit} cacheMiss={cacheMiss} />
       </div>
     </div>
   )
@@ -174,6 +189,7 @@ function QuerySelect({setQueryChoice, selectedQuery} : BasicSelectProps) {
   );
 }
 
+
 const StyledDiv = styled('div')(({ theme }) => ({
   ...theme.typography.button,
   backgroundColor: theme.palette.background.paper,
@@ -199,6 +215,7 @@ interface QueryDemoProps {
   addErrorAlerts: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
+ 
 
 
 
