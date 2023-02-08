@@ -30,11 +30,18 @@ import ZoeH from "../assets/images/profile_pics/QUELL-headshot ZoeH.png"
 import JackieHe from "../assets/images/profile_pics/QUELL-headshot JackieHe.png"
 import CeraB from "../assets/images/profile_pics/QUELL-headshot CeraB.png"
 import AlexMartinez from "../assets/images/profile_pics/QUELL-headshot AlexM.png"
+import RylanW from "../assets/images/profile_pics/QUELL-headshot w border-RylanW.png"
 
 /* 
   Reusable component to generate each team member
 */
-
+const RYLANWESSEL = {
+  name: 'Rylan Wessel',
+  src: RylanW,
+  bio: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis quisquam vel repellat saepe, quam odit porro, tempora provident aperiam voluptatem explicabo illo pariatur suscipit consectetur molestiae deleniti ipsa eum tempore',
+  linkedin: 'https://www.linkedin.com/in/rylan-wessel-48aaa625a/',
+  github: 'https://github.com/XpIose',
+};
 const CERABARROW = {
   name: 'Cera Barrow',
   src: CeraB,
@@ -225,6 +232,7 @@ const JUSTINJAEGAR = {
   github: "https://github.com/justinjaeger",
 };
 const TeamArr = [
+  RYLANWESSEL,
   JACKIEHE,
   ALEXANDERMARTINEZ,
   CERABARROW,

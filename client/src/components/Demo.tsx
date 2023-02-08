@@ -71,7 +71,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemo
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQuery} />
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
-      <div style={{width: '85%', border: '3px solid white', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '15px'}}>
+      <div style={{width: '85%', border: 'none', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '5px'}}>
         <div id="responseContainer" >
           <TextField
           multiline={true}
@@ -104,7 +104,7 @@ const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls
           <QuerySelect setQueryChoice={setQueryChoice} selectedQuery={selectedQuery}/>     
          </Box>
          {/* SUBMIT QUERY BUTTON */}
-         <Button endIcon={<ForwardRoundedIcon />} sx={{ marginBottom: '12px', border: 1, maxHeight: 35, minWidth: 100 , maxWidth: 160 }} onClick={() => submitQuery()} size='medium' color='secondary' variant='contained'>Query</Button>
+         <Button endIcon={<ForwardRoundedIcon />} sx={{ marginBottom: '12px', border: 'none', maxHeight: 35, minWidth: 100 , maxWidth: 160 }} onClick={() => submitQuery()} size='medium' color='secondary' variant='contained'>Query</Button>
     </div>
   )
 }
@@ -126,12 +126,14 @@ const CacheControls = () => {
   return (
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-        <Button sx={{ border: 1, textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
-        <Button sx={{ border: 1, textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
+        <Button sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
+        <Button sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
-       <StyledDiv>{'Max Depth: 10'}</StyledDiv>
-       <StyledDiv>{'Max Cost: 50'}</StyledDiv>
+       <p>{'Max Depth: 10'}</p>
+       <p>{'Max Cost: 50'}</p>
+       {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
+       <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
       </Stack>
     </div>
   )
