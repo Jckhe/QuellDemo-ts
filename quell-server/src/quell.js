@@ -2,7 +2,7 @@
 const redis = require('redis');
 const { parse } = require('graphql/language/parser');
 const { visit, BREAK } = require('graphql/language/visitor');
-const { graphql } = require('graphql');
+const { graphql, GraphQLError } = require('graphql');
 
 const defaultCostParams = {
   maxCost: 50, // maximum cost allowed before a request is rejected
@@ -222,6 +222,7 @@ class QuellCache {
               this.queryMap,
               prototype
             );
+            mergedResponse.cached = false;
             // console.log('after SuccessfulCache has been normalized, sending merged response');
             res.locals.queryResponse = { ...mergedResponse };
             return next();
@@ -1830,7 +1831,10 @@ class QuellCache {
   depthLimit(req, res, next) {
     console.log('inside depthLimit')
     //get depth max limit from cost parameters
-    const { depthMax } = this.costParameters;
+    let { maxDepth } = this.costParameters;
+    //maxDepth can be reassigned to get depth max limit from req.body if user selects depth limit
+    if (req.body.costOptions.maxDepth) maxDepth = req.body.costOptions.maxDepth;
+    console.log('MAX DEPTH: ', maxDepth);
     //return error if no query in request.
     if (!req.body.query) return res.status(400);
     //assign graphQL query string to variable queryString
@@ -1852,13 +1856,20 @@ class QuellCache {
     //will be using this function to recursively go deeper into the nested query
     const determineDepth = (proto, currentDepth = 0) => {
       console.log('inside determineDepth')
-      if (currentDepth > depthMax) throw new GraphQLError(
-        // `Your query exceeds maximum operation depth of ${depthMax}`,
-        {
-          code: "DEPTH_LIMIT_EXCEEDED",
-          http: {status: 400}
-        }
-      );
+      if (currentDepth > maxDepth) {
+      // throw new GraphQLError(
+      //   `Your query exceeds maximum operation depth of ${depthMax}`,
+      //   {
+      //     code: "DEPTH_LIMIT_EXCEEDED",
+      //     http: {status: 400}
+      //   }
+      // );
+      //add err to res.locals.queryRes obj as a new key
+      const err = { err: `Depth limit exceeded, tried to send query with the depth of ${currentDepth}.` };
+      console.log('Error: ', err);
+      res.locals.queryErr = err;
+      return next();//do we return with err?
+      }
       // console.log("Checking depth:", currentDepth)
       Object.keys(proto).forEach((key) => {
         if (typeof proto[key] === 'object' && !key.includes('__')) {
@@ -1886,7 +1897,10 @@ class QuellCache {
 
   costLimit(req, res, next) {
     console.log('inside costLimit')
-     const {maxCost, mutationCost, objectCost, depthCostFactor, scalarCost} = this.costParameters;
+     //get default values for costParameters
+     let {maxCost, mutationCost, objectCost, depthCostFactor, scalarCost} = this.costParameters;
+     //maxCost can be reassigned to get maxcost limit from req.body if user selects cost limit
+     if (req.body.costOptions.maxCost) maxCost = req.body.costOptions.maxCost;
      //return error if no query in request.
      if (!req.body.query) return res.status(400);
      //assign graphQL query string to variable queryString
@@ -1912,7 +1926,7 @@ class QuellCache {
       console.log("inside determineCost")
       if (cost > maxCost) {
         throw new GraphQLError(
-          // `Your query exceeds maximum operation cost of ${maxCost}`,
+          `Your query exceeds maximum operation cost of ${maxCost}`,
           {
             code: "COST_LIMIT_EXCEEDED",
             http: {status: 400}
@@ -1938,7 +1952,7 @@ class QuellCache {
       if (totalCost > maxCost) {
         // console.log("The cost: ", totalCost)
         throw new GraphQLError(
-          `Your query exceeds maximum operation depth of ${maxCost}`,
+          // `Your query exceeds maximum operation depth of ${maxCost}`,
           {
             code: "COST_LIMIT_EXCEEDED",
             http: {status: 400}

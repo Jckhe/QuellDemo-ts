@@ -3,7 +3,7 @@ const determineType = require('./helpers/determineType');
 
 const loki = require('lokijs');
 const lokidb = new loki('client-cache');
-let lokiCache = lokidb.addCollection('loki-client-cache');
+let lokiCache = lokidb.addCollection('loki-client-cache', { disableMeta: true });
 
 
 /*The IDCache is a psuedo-join table that is a JSON object in memory, 
@@ -19,7 +19,7 @@ let IDCache = {};
 
 const clearCache = () => {
   lokidb.removeCollection('loki-client-cache');
-  lokiCache = lokidb.addCollection('loki-client-cache');
+  lokiCache = lokidb.addCollection('loki-client-cache', { disableMeta: true });
   IDCache = {};
   console.log('Client cache has been cleared.');
 };
@@ -34,14 +34,14 @@ const clearCache = () => {
 
 
 
-async function Quellify(endPoint, query) {
+async function Quellify(endPoint, query, costOptions) {
   const performFetch = async () => {
     const fetchOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query: query }),
+      body: JSON.stringify({ query: query, costOptions: costOptions  }),
     };
     console.log("DA QUERY IN QUELLIFY: ", typeof query)
     const serverResponse = await fetch(endPoint, fetchOptions);
