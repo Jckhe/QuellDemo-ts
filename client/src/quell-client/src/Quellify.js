@@ -77,15 +77,20 @@ async function Quellify(endPoint, query) {
     // check IDCache with query, if query returns the $loki ID, find the results for searching the LokiDBCache
     //lokiCache to see if this call has a $loki associated with it. if so, retrieve and return it
     if (IDCache[query]) {
-      console.log('data exists in loki cache');
+      console.log('CACHE HIT data exists in loki cache');
+
       // grab the $loki ID from the IDCache
       const queryID = IDCache[query];
       // grabs results from lokiCachi by $loki id
       const results = lokiCache.get(queryID);
-      return results;
+      console.log('from line 86, results: ', results)
+      return [results, true];
     }
     // if this call has not been made already, execute fetch request with original query
     else {
+      //this is a data cache miss
+      console.log('CACHE MISS data does not exist in loki cache');
+
       const parsedData = await performFetch();
       console.log('parsed:', parsedData);
       
@@ -93,8 +98,9 @@ async function Quellify(endPoint, query) {
       const addedEntry = lokiCache.insert(parsedData.data);
       //add query to IDCache so that the query returns the $loki index
       IDCache[query] = addedEntry.$loki;
+      console.log('from line 101, addedEntry: ', addedEntry)
 
-      return addedEntry;
+      return [addedEntry, false];
     }
   }
 }
