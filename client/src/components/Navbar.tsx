@@ -51,11 +51,13 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
     return (
       <Button
       onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
-      onMouseEnter={()=> setHover(true)}
-      onMouseLeave={()=> setHover(false)}
-      href="#scroll-about" sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'>
-        <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography sx={{ position: 'relative'}} variant='button'>About</Typography></Slide>
-        <Slide direction="up"timeout={{enter: 400, exit: 100}} in={hover} mountOnEnter unmountOnExit><Groups2RoundedIcon /></Slide>
+      // onMouseEnter={()=> setHover(true)}
+      // onMouseLeave={()=> setHover(false)}
+      href="#scroll-about" 
+      sx={{ minWidth:"85px", boxShadow: 'none', minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 'none', overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'
+      >
+      //   <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography sx={{ position: 'relative'}} variant='button'>About</Typography></Slide>
+      //   <Slide direction="up"timeout={{enter: 400, exit: 100}} in={hover} mountOnEnter unmountOnExit><Groups2RoundedIcon /></Slide>
         </Button>
     )
   }
@@ -69,40 +71,51 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
     return (
       <Button
       onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
-      onMouseEnter={()=> setHover(true)}
-      onMouseLeave={()=> setHover(false)}
+      // onMouseEnter={()=> setHover(true)}
+      // onMouseLeave={()=> setHover(false)}
       href="#scroll-demo"      
-      sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center'}} color="secondary" variant='contained'>
+      sx={{ minWidth:"85px", boxShadow: 'none', minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 'none', overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center'}} color="secondary" variant='contained'>
         <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography sx={{ position: 'relative'}} variant='button'>Demo</Typography></Slide>
         <Slide direction="up" timeout={{enter: 400, exit: 100}} in={hover} mountOnEnter unmountOnExit><AspectRatioRoundedIcon sx={{position: 'relative'}}/></Slide>
         </Button>
     )
   }
-
+  // const DemoButton = () => {
+  //   return (
+  //     <button
+  //     onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
+  //     ref="#scroll-demo">Demo
+        
+  //     </button>
+  //   )
+  // }
  
 
   const DocsButton = () => {
     const [hover, setHover] = useState<boolean>(false);
-    
-
-
-
     return (
       <Link sx={{ textDecoration: 'none'}} target="_blank" href="https://github.com/open-source-labs/Quell#quell" rel="noreferrer">
       <Button
-    
-      onMouseEnter={()=> setHover(true)}
-      onMouseLeave={()=> setHover(false)}    
-      sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 1, overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'>
-       
+      // onMouseEnter={()=> setHover(true)}
+      // onMouseLeave={()=> setHover(false)}    
+      sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', 
+        border: 'none',
+        boxShadow: 'none'}} color="secondary" variant='contained'>
           <Slide direction="down" timeout={{enter: 200, exit: 250}} in={!hover} mountOnEnter unmountOnExit><Typography variant='button'>Docs</Typography></Slide>
           <Slide direction="up"timeout={{enter: 200, exit: 100}} in={hover} mountOnEnter unmountOnExit><MenuBookRoundedIcon /></Slide>
-       
       </Button>
       </Link>
     )
   }
 
+  // const DocsButton = () => {
+  //   const [hover, setHover] = useState<boolean>(false);
+  //   return (
+  //     <Link sx={{ textDecoration: 'none'}} target="_blank" href="https://github.com/open-source-labs/Quell#quell" rel="noreferrer">
+  //     <button className="navBtn">DOCS</button>
+  //     </Link>
+  //   )
+  // }
 
 
 
@@ -110,16 +123,26 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
     <AppBar
     id={rendered ? 'renderedNav' : '' }
     sx={{opacity: 0, minHeight: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '15px', paddingRight: '15px'}} 
-    color="primary" position="fixed" elevation={20} >
+    color="primary" position="fixed" elevation={5} >
       {/* For Quell Bird Logo */}
       <BirdLogo />
       {/* Navmenu buttons */}
-      <Stack sx={{overflow: 'hidden'}}direction="row" className="navMenuContainer" justifyContent="center" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
+      <Stack className="navMenuContainer" sx={{overflow: 'hidden'}}direction="row" justifyContent="center" divider={<Divider color="grey" orientation="vertical" flexItem />} spacing={2}>
         <AboutButton />
         <DemoButton />
         <DocsButton />
       </Stack>
-      <Button onClick={() => {toggleRenderTeam(!teamComp)}} sx={{ border: 1 }} variant='contained'>{teamComp ? "Home" : "Team" }</Button>
+      <button className="teamBtn"
+        onClick={() => {toggleRenderTeam(!teamComp)}} 
+        // style={{color: 'white'}}
+        >{teamComp ? "Home" : "Team" }
+      </button>
+      {/* <Button 
+        onClick={() => {toggleRenderTeam(!teamComp)}} 
+        sx={{boxShadow: 'none', height: '100%'}} 
+        variant='contained'
+        >{teamComp ? "Home" : "Team" }
+      </Button> */}
     </AppBar>
   )
 }
