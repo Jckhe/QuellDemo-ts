@@ -9,6 +9,7 @@ import { HitMiss } from './HitMiss'
 import { SuccessfulQuery, BadQuery } from './Alert';
 import { Quellify, clearLokiCache } from '../quell-client/src/Quellify.js';
 import { styled } from '@mui/material/styles';
+import { width } from '@mui/system';
 
 
 
@@ -33,7 +34,7 @@ const Demo = memo(() => {
   }
 
 // Server
-if (isToggled) {
+if (!isToggled) {
   return (
     <div style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center'}}>
       <div id="scroll-demo" className="scrollpoint"><img src={demoHeader} id="demo-header"/>
@@ -340,11 +341,19 @@ const CacheControlsServer = ({ setDepth, setCost }: CacheControlProps) => {
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
         <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
       </Stack>
-      <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
-      <Limit setDepth={setDepth} setCost={setCost}/>
+      {/* <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={2}> */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '60%',
+      }}>
+        <Limit setDepth={setDepth} setCost={setCost}/>
+      </div>
        {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
        <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
-      </Stack>
+      {/* </Stack> */}
     </div>
   )
 }
@@ -390,7 +399,7 @@ function QuerySelect({setQueryChoice, selectedQuery} : BasicSelectProps) {
 const StyledDiv = styled('div')(({ theme }) => ({
   ...theme.typography.button,
   backgroundColor: theme.palette.primary.main,
-  padding: theme.spacing(0.55, 1.75),
+  // padding: theme.spacing(0.55, 1.75),
   // border: '1px solid black',
   borderRadius: '5px',
   fontSmooth: 'always',
@@ -402,19 +411,25 @@ const StyledDiv = styled('div')(({ theme }) => ({
 function Limit({ setDepth, setCost }: CacheControlProps) {
   return(
     <div>
-      <StyledDiv style={{marginBottom: '10px'}}>
-        <form>
-          <label>Max Depth:</label>
+      <StyledDiv 
+      // style={{width: '150px'}}
+      >
+        <form 
+        // style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', margin: '0px, 0px, 0px, 0px'}}
+         >
+          <label>Max Depth: </label>
           {/* each input will have onChange event handler that invokes function to update state */}
           <input 
-          // style={{paddingLeft: '50%'}} 
+          style={{width: '20%', margin: '0px, 0px, 0px, 20%', backgroundColor: '#999', color: '#FFF'}} 
           type="number" placeholder="10" onChange = {(e) => {setDepth(e.target.value)}}/>
         </form>
       </StyledDiv>
-      <StyledDiv>
+      <StyledDiv style={{marginBottom: '10px'}}>
         <form>
-          <label>Max Cost:</label>
-          <input type="number" placeholder="50" onChange = {(e) => {setCost(e.target.value)}}/>
+          <label>Max Cost: </label>
+          <input 
+          style={{width: '20%', margin: '0px, 0px, 0px, 20%', backgroundColor: '#999', color: '#FFF'}} 
+          type="number" placeholder="50" onChange = {(e) => {setCost(e.target.value)}}/>
         </form>
       </StyledDiv>
     </div>

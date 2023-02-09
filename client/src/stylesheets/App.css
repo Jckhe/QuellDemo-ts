@@ -234,6 +234,7 @@ body {
   height: 10%;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 15px;
   color: rgb(53, 49, 49);
