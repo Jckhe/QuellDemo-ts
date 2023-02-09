@@ -8,13 +8,13 @@ html {
 /* For 27-in screens */
 @media screen and (min-width: 1820px) and (max-width: 2560px)  {
   .demoContainer {
-    max-width: 50%;
+    max-width: 75%;
     max-height: 950px;
     margin: 320px auto 120px;
   }
 
-  #demo-header {
-    
+  #responseContainer {
+    min-height: 300px;
   }
 
   #scroll-demo {
@@ -22,26 +22,47 @@ html {
     right: 1.75rem;
   }
 
+  /* .demoLeft {
+    display: flex;
+    flex-direction: row;
+  } */
+
   .demoRight {
     min-height: 950px;
   }
 
   .graphContainer {
-    height: 50em;
+    height: 55em;
     width: 90%;
+  }
+
+  .monaco-editor-container {
+    height: 400%;
   }
 
 }
 
 
-
-
 /* for Laptops (Macbook 13.3) */
 @media screen and (min-width: 800px) and (max-width: 1800px) {
+  body {
+    font-size: small;
+  }
+
+  Button {
+    font-size: small;
+  }
+  
+  .dropDownContainer {
+    flex-direction: column;
+    padding-bottom: 2.5rem;
+  }
+
   .demoContainer {
     margin: 150px auto 120px;
-    max-width: 75%;
-    max-height: 720px;
+    max-width: 80%;
+    max-height: 1400px;
+    min-height: 500px!important;
   }
 
   #scroll-demo {
@@ -49,14 +70,29 @@ html {
   }
 
   .demoRight {
-    min-height: 730px;
+    min-height: 1150px;
+    /* display: flex;
+    /* align-items: space-between; */
+    /* justify-content: space-between;
+    align-content: space-between;  */
   }
 
   .graphContainer {
-    height: 35em;
+    height: 70em;
     width: 90%;
+    display: flex;
+    /* align-items: space-between; */
+    justify-content: space-between;
+    align-content: space-between;
   }
 
+  .monaco-editor-container {
+    height: 400px;
+  }
+
+  #responseContainer {
+    height: 400px!important;
+  }
 
 }
 
@@ -178,7 +214,7 @@ body {
 .demoContainer {
   justify-content: space-between;
   z-index: 2;
-  width: 75%;
+  /* width: 75%; */
   padding: 20px;
   border-radius: 10px;
   /* border: 2.25px solid #BBB; */
@@ -189,8 +225,9 @@ body {
   overflow: hidden;
   scroll-snap-align: y mandatory;
   scroll-behavior: smooth;
-  min-height: 750px;
-  transition: scroll-behavior, scroll-snap-align 0.5s ease-in-out;
+  height: 1200px;
+  max-height: 3000px;
+  /* transition: scroll-behavior, scroll-snap-align 0.5s ease-in-out; */
 }
 
 .cacheControlContainer {
@@ -252,8 +289,8 @@ body {
 
 #responseContainer {
   min-width: 95%;
-  min-height: 20em;
-  max-height: 20em;
+  min-height: 50rem;
+  max-height: 50rem!important;
   background-color: #474f57;
   overflow-y: scroll;
 }
@@ -280,8 +317,6 @@ body {
   overflow: hidden!important;
 }
 
-
-
 .monaco-editor {
   font-size: 50px;
   z-index: 1;
@@ -295,7 +330,7 @@ body {
   display: flex;
   justify-content: center;
   position: relative;
-  height: 25%;
+  height: 70%;
   border: 2px solid rgba(0, 0, 0, .1);
   width: 85%;
   overflow: hidden!important;
