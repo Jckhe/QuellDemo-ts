@@ -22,7 +22,7 @@ ChartJS.register(
 
 
 
-export function Graph({responseTimes}: GraphProps) {
+export function Graph({responseTimes, selectedQuery, queryTypes}: GraphProps) {
   
   let number = 0;
   let dataset = {
@@ -37,6 +37,14 @@ export function Graph({responseTimes}: GraphProps) {
       y: {
         min: 0,
         max: 750,
+        display: true,
+        align: "center",
+        text: 'Response times in ms',
+        ticks: {
+         callback: function(value: number | string) {
+          return value + ' ms'
+         }
+        }
     }
     },
     plugins: {
@@ -70,4 +78,6 @@ export function Graph({responseTimes}: GraphProps) {
 
 interface GraphProps {
   responseTimes: any[];
+  selectedQuery: string;
+  queryTypes: any[];
 }

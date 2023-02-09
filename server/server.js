@@ -30,8 +30,9 @@ app.use(express.static("./dist"));
 
 //
 
-app.use('/graphql', quellCache.costLimit, quellCache.query, (req, res) => {
-  return res.status(200).send(res.locals.queryResponse);
+app.use('/graphql', quellCache.costLimit, quellCache.depthLimit, quellCache.query, (req, res) => {
+  if (res.locals.queryErr) return res.status(200).json(res.locals.queryErr);
+  else return res.status(200).send(res.locals.queryResponse);
 });
 
 // clear cache
