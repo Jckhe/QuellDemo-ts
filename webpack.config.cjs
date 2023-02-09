@@ -54,7 +54,7 @@ module.exports = {
     },
     proxy: {
       '/api': 'http://localhost:3000',
-      '/graphQL': 'http://localhost:3000',
+      '/graphql': 'http://localhost:3000',
       '/clearCache': 'http://localhost:3000/',
 			'/redis': 'http://localhost:3000/'
     }

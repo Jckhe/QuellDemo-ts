@@ -3,7 +3,7 @@ const determineType = require('./helpers/determineType');
 
 const loki = require('lokijs');
 const lokidb = new loki('client-cache');
-let lokiCache = lokidb.addCollection('loki-client-cache');
+let lokiCache = lokidb.addCollection('loki-client-cache', { disableMeta: true });
 
 
 /*The IDCache is a psuedo-join table that is a JSON object in memory, 
@@ -19,7 +19,7 @@ let IDCache = {};
 
 const clearCache = () => {
   lokidb.removeCollection('loki-client-cache');
-  lokiCache = lokidb.addCollection('loki-client-cache');
+  lokiCache = lokidb.addCollection('loki-client-cache', { disableMeta: true });
   IDCache = {};
   console.log('Client cache has been cleared.');
 };
@@ -34,14 +34,14 @@ const clearCache = () => {
 
 
 
-async function Quellify(endPoint, query) {
+async function Quellify(endPoint, query, costOptions) {
   const performFetch = async () => {
     const fetchOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query: query }),
+      body: JSON.stringify({ query: query, costOptions: costOptions  }),
     };
     console.log("DA QUERY IN QUELLIFY: ", typeof query)
     const serverResponse = await fetch(endPoint, fetchOptions);
@@ -77,15 +77,20 @@ async function Quellify(endPoint, query) {
     // check IDCache with query, if query returns the $loki ID, find the results for searching the LokiDBCache
     //lokiCache to see if this call has a $loki associated with it. if so, retrieve and return it
     if (IDCache[query]) {
-      console.log('data exists in loki cache');
+      console.log('CACHE HIT data exists in loki cache');
+
       // grab the $loki ID from the IDCache
       const queryID = IDCache[query];
       // grabs results from lokiCachi by $loki id
       const results = lokiCache.get(queryID);
-      return results;
+      console.log('from line 86, results: ', results)
+      return [results, true];
     }
     // if this call has not been made already, execute fetch request with original query
     else {
+      //this is a data cache miss
+      console.log('CACHE MISS data does not exist in loki cache');
+
       const parsedData = await performFetch();
       console.log('parsed:', parsedData);
       
@@ -93,8 +98,9 @@ async function Quellify(endPoint, query) {
       const addedEntry = lokiCache.insert(parsedData.data);
       //add query to IDCache so that the query returns the $loki index
       IDCache[query] = addedEntry.$loki;
+      console.log('from line 101, addedEntry: ', addedEntry)
 
-      return addedEntry;
+      return [addedEntry, false];
     }
   }
 }
