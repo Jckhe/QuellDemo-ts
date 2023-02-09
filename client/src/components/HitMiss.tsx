@@ -9,7 +9,7 @@ export function HitMiss({cacheMiss, cacheHit}: HitMissProps) {
     console.log('inside hitmiss component...cacheMiss = ', cacheMiss)
     console.log('inside hitmiss component....cacheHit= ', cacheHit)
      const data = {
-      labels: ['Hit', 'Miss'],
+      labels: ['Client Cache Hit', 'Client Cache Miss'],
       datasets: [
         {
           label: 'Hit or Miss',
@@ -27,7 +27,10 @@ export function HitMiss({cacheMiss, cacheHit}: HitMissProps) {
         },
       ],
     };
-  return <Doughnut data={data} />;
+  return <div style={{display: 'flex', flexDirection:'column', alignItems: 'center', paddingBottom: '.5em'}}>
+    <h3>Cache Hit vs. Cache Miss</h3>
+    <Doughnut data={data}  />
+  </div>
 }
 
 interface HitMissProps {

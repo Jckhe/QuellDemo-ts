@@ -83,7 +83,8 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemo
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQuery} />
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
-      {/* <div style={{width: '85%', border: '3px solid white', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '15px'}}> 
+      <h3>See your query results: </h3>
+      <div style={{width: '85%', border: '3px solid white',  overflow: 'hidden', borderRadius: '15px'}}> 
         <div id="responseContainer" >
           <TextField
           multiline={true}
@@ -95,9 +96,10 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes}: QueryDemo
           >
           </TextField>
         </div>
-      </div> */}
-      <div id="hitMiss">
+      </div>
+      <div  style={{border: '3px solid white', marginTop: '1em',  borderRadius: '15px'}}>
         <HitMiss cacheHit={cacheHit} cacheMiss={cacheMiss} />
+
       </div>
     </div>
   )
@@ -115,6 +117,7 @@ const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls
 
   return (
     <div className="dropDownContainer" >
+      <h3>Select a query to test: </h3>
          <Box sx={{display: 'flex', flexDirection:'column', alignItems: 'center'}}>
           <QuerySelect setQueryChoice={setQueryChoice} selectedQuery={selectedQuery}/>     
          </Box>

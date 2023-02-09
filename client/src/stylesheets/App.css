@@ -13,9 +13,6 @@ html {
     margin: 320px auto 120px;
   }
 
-  #demo-header {
-    
-  }
 
   #scroll-demo {
     top: 17.5rem;
@@ -40,8 +37,8 @@ html {
 @media screen and (min-width: 800px) and (max-width: 1800px) {
   .demoContainer {
     margin: 150px auto 120px;
-    max-width: 75%;
-    max-height: 720px;
+    /* max-width: 75%;
+    max-height: 720px; */
   }
 
   #scroll-demo {
@@ -164,7 +161,7 @@ body {
 .demoContainer {
   justify-content: space-between;
   z-index: 2;
-  width: 75%;
+  /* width: 75%; */
   padding: 20px;
   border-radius: 25px;
   border: 2.25px solid rgba(0, 0, 0, .1);
@@ -172,10 +169,11 @@ body {
   background-color: #e4e4e4;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  /* overflow: hidden; */
   scroll-snap-align: y mandatory;
   scroll-behavior: smooth;
-  min-height: 750px;
+  height: 3000px;
+  /* min-height: 750px; */
   transition: scroll-behavior, scroll-snap-align 0.5s ease-in-out;
 }
 
@@ -238,8 +236,8 @@ body {
 
 #responseContainer {
   min-width: 95%;
-  min-height: 20em;
-  max-height: 20em;
+  min-height: 50em;
+  max-height: 50em;
   background-color: #474f57;
   overflow-y: scroll;
 }
@@ -281,7 +279,7 @@ body {
   display: flex;
   justify-content: center;
   position: relative;
-  height: 25%;
+  height: 100%;
   border: 2px solid rgba(0, 0, 0, .1);
   width: 85%;
   overflow: hidden!important;
