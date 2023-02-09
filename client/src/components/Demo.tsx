@@ -172,7 +172,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
       <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
       <h3>See your query results: </h3>
-      <div style={{width: '85%', border: '3px solid white',  overflow: 'hidden', borderRadius: '15px'}}> 
+      <div style={{width: '85%', border: 'none',  overflow: 'hidden', borderRadius: '5px'}}> 
         <div id="responseContainer" >
           <TextField
           multiline={true}
@@ -259,7 +259,7 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
   return (
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQueryServer} />
-      <Button onClick={resetGraph}>Reset Graph</Button>
+      <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
       <h3 style={{paddingBottom: '1rem'}}>See your query results: </h3>
       <div style={{width: '85%', border: 'none', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '5px'}}>
@@ -275,7 +275,9 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
           </TextField>
         </div>
       </div>
-      <div  style={{border: '3px solid white', marginTop: '1em',  borderRadius: '15px'}}>
+      <div  style={{
+        border: '3px solid white', 
+        marginTop: '1em',  borderRadius: '15px'}}>
         <HitMiss cacheHit={cacheHit} cacheMiss={cacheMiss} />
 
       </div>
@@ -315,7 +317,7 @@ const CacheControls = ({ setDepth, setCost }: CacheControlProps) => {
   return (
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-        <Button sx={{ border: 1, textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
+        <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
       {/* <Limit setDepth={setDepth} setCost={setCost}/> */}
@@ -336,7 +338,7 @@ const CacheControlsServer = ({ setDepth, setCost }: CacheControlProps) => {
   return (
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-        <Button sx={{ border: 1, textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
+        <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
       <Limit setDepth={setDepth} setCost={setCost}/>
@@ -387,23 +389,26 @@ function QuerySelect({setQueryChoice, selectedQuery} : BasicSelectProps) {
 
 const StyledDiv = styled('div')(({ theme }) => ({
   ...theme.typography.button,
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.primary.main,
   padding: theme.spacing(0.55, 1.75),
-  border: '1px solid black',
+  // border: '1px solid black',
   borderRadius: '5px',
   fontSmooth: 'always',
-  cursor: 'pointer',
+  color: 'white',
+  // cursor: 'pointer',
   boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
 }));
 
 function Limit({ setDepth, setCost }: CacheControlProps) {
   return(
     <div>
-      <StyledDiv>
+      <StyledDiv style={{marginBottom: '10px'}}>
         <form>
           <label>Max Depth:</label>
           {/* each input will have onChange event handler that invokes function to update state */}
-          <input type="number" placeholder="10" onChange = {(e) => {setDepth(e.target.value)}}/>
+          <input 
+          // style={{paddingLeft: '50%'}} 
+          type="number" placeholder="10" onChange = {(e) => {setDepth(e.target.value)}}/>
         </form>
       </StyledDiv>
       <StyledDiv>
