@@ -234,6 +234,7 @@ body {
   height: 10%;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 15px;
   color: rgb(53, 49, 49);
@@ -302,7 +303,15 @@ body {
   width: 50%;
 }
 
+::placeholder {
+  color: white;
+}
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 .dropDownContainer {
   margin-top: 20px;
