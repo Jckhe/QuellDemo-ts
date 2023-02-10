@@ -303,7 +303,15 @@ body {
   width: 50%;
 }
 
+::placeholder {
+  color: white;
+}
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 .dropDownContainer {
   margin-top: 20px;

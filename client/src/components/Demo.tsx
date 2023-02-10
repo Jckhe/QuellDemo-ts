@@ -34,7 +34,7 @@ const Demo = memo(() => {
   }
 
 // Server
-if (!isToggled) {
+if (isToggled) {
   return (
     <div style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center'}}>
       <div id="scroll-demo" className="scrollpoint"><img src={demoHeader} id="demo-header"/>
@@ -63,7 +63,7 @@ if (!isToggled) {
         />
         <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
         <div className="demoRight">
-          <CacheControlsServer setDepth={setDepth} setCost={setCost}/>
+          <CacheControlsServer setDepth={setDepth} setCost={setCost} addResponseTimes={addResponseTimes}/>
           <Divider orientation="horizontal" />
           <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
           
@@ -108,7 +108,7 @@ if (!isToggled) {
               />
               <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
               <div className="demoRight">
-                <CacheControls setDepth={setDepth} setCost={setCost}/>
+                <CacheControls setDepth={setDepth} setCost={setCost} addResponseTimes={addResponseTimes}/>
                 <Divider orientation="horizontal" />
                 <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
                 
@@ -158,19 +158,19 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
       })
   }
 
-  function resetGraph() {
-    console.log('resetting the graph');
-    addResponseTimes([]);
-    clearLokiCache();
-    fetch('/clearCache')
-    .then((res) => console.log('Cleared Server Cache!'));
-  }
+  // function resetGraph() {
+  //   console.log('resetting the graph');
+  //   addResponseTimes([]);
+  //   clearLokiCache();
+  //   fetch('/clearCache')
+  //   .then((res) => console.log('Cleared Server Cache!'));
+  // }
 
 
   return (
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQuery} />
-      <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
+      {/* <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button> */}
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
       <h3>See your query results: </h3>
       <div style={{width: '85%', border: 'none',  overflow: 'hidden', borderRadius: '5px'}}> 
@@ -248,19 +248,19 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
   //   })
   }
 
-  function resetGraph() {
-    console.log('resetting the graph');
-    addResponseTimes([]);
-    clearLokiCache();
-    fetch('/clearCache')
-    .then((res) => console.log('Cleared Server Cache!'));
-  }
+  // function resetGraph() {
+  //   console.log('resetting the graph');
+  //   addResponseTimes([]);
+  //   clearLokiCache();
+  //   fetch('/clearCache')
+  //   .then((res) => console.log('Cleared Server Cache!'));
+  // }
 
 
   return (
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQueryServer} />
-      <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
+      {/* <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button> */}
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
       <h3 style={{paddingBottom: '1rem'}}>See your query results: </h3>
       <div style={{width: '85%', border: 'none', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '5px'}}>
@@ -309,7 +309,15 @@ const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls
 }
 
 
-const CacheControls = ({ setDepth, setCost }: CacheControlProps) => {
+const CacheControls = ({ setDepth, setCost, addResponseTimes}: CacheControlProps) => {
+
+  function resetGraph() {
+    console.log('resetting the graph');
+    addResponseTimes([]);
+    clearLokiCache();
+    // fetch('/clearCache')
+    // .then((res) => console.log('Cleared Server Cache!'));
+  }
 
   const clearClientCache = () => {
     return clearLokiCache();
@@ -319,6 +327,7 @@ const CacheControls = ({ setDepth, setCost }: CacheControlProps) => {
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
         <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
+        <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>      
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
       {/* <Limit setDepth={setDepth} setCost={setCost}/> */}
@@ -329,7 +338,15 @@ const CacheControls = ({ setDepth, setCost }: CacheControlProps) => {
   )
 }
 
-const CacheControlsServer = ({ setDepth, setCost }: CacheControlProps) => {
+const CacheControlsServer = ({ setDepth, setCost, addResponseTimes }: CacheControlProps) => {
+
+  function resetGraph() {
+    console.log('resetting the graph');
+    addResponseTimes([]);
+    clearLokiCache();
+    fetch('/clearCache')
+    .then((res) => console.log('Cleared Server Cache!'));
+  }
 
   const clearServerCache = () => {
     fetch('/clearCache')
@@ -340,6 +357,7 @@ const CacheControlsServer = ({ setDepth, setCost }: CacheControlProps) => {
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
         <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
+        <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
       </Stack>
       {/* <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={2}> */}
       <div style={{
@@ -349,7 +367,7 @@ const CacheControlsServer = ({ setDepth, setCost }: CacheControlProps) => {
         justifyContent: 'center',
         width: '60%',
       }}>
-        <Limit setDepth={setDepth} setCost={setCost}/>
+        <Limit setDepth={setDepth} setCost={setCost} addResponseTimes= {addResponseTimes}/>
       </div>
        {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
        <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
@@ -411,14 +429,9 @@ const StyledDiv = styled('div')(({ theme }) => ({
 function Limit({ setDepth, setCost }: CacheControlProps) {
   return(
     <div>
-      <StyledDiv 
-      // style={{width: '150px'}}
-      >
-        <form 
-        // style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', margin: '0px, 0px, 0px, 0px'}}
-         >
+      <StyledDiv style={{marginBottom: '10px'}}>
+        <form>
           <label>Max Depth: </label>
-          {/* each input will have onChange event handler that invokes function to update state */}
           <input 
           style={{width: '20%', margin: '0px, 0px, 0px, 20%', backgroundColor: '#999', color: '#FFF'}} 
           type="number" placeholder="10" onChange = {(e) => {setDepth(e.target.value)}}/>
@@ -428,7 +441,7 @@ function Limit({ setDepth, setCost }: CacheControlProps) {
         <form>
           <label>Max Cost: </label>
           <input 
-          style={{width: '20%', margin: '0px, 0px, 0px, 20%', backgroundColor: '#999', color: '#FFF'}} 
+          style={{width: '20%', marginLeft: '6.5%', backgroundColor: '#999', color: '#FFF'}} 
           type="number" placeholder="50" onChange = {(e) => {setCost(e.target.value)}}/>
         </form>
       </StyledDiv>
@@ -459,6 +472,7 @@ interface QueryDemoProps {
 interface CacheControlProps {
   setDepth: (val: string) => void;
   setCost: (val: string) => void;
+  addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 
