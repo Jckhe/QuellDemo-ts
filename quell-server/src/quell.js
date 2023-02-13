@@ -4,6 +4,7 @@ const { parse } = require('graphql/language/parser');
 const { visit, BREAK } = require('graphql/language/visitor');
 const { graphql, GraphQLError } = require('graphql');
 const e = require('express');
+// const { PlaylistRemove } = require('@mui/icons-material');
 
 const defaultCostParams = {
   maxCost: 50, // maximum cost allowed before a request is rejected
@@ -217,8 +218,8 @@ class QuellCache {
                 cacheHasData = true;
               }
             }
-            console.log('cache response: ')
-            console.log(cacheResponse);
+            // console.log('cache response: ')
+            // console.log(cacheResponse);
             // join uncached and cached responses, if cache does not have data then just use the database response
             mergedResponse = cacheHasData
               ? this.joinResponses(
@@ -227,13 +228,14 @@ class QuellCache {
                   prototype
                 )
               : databaseResponse;
-              console.log('merged response: ')
-            console.log(mergedResponse);
+            //   console.log('merged response: ')
+            // console.log(mergedResponse);
             console.log('calling normalize for cache on line 190ish');
+            let currName = 'string it should not be again';
             const successfulCache = await this.normalizeForCache(
               mergedResponse.data,
               this.queryMap,
-              prototype
+              prototype, currName
             );
             mergedResponse.cached = false;
             // console.log('after SuccessfulCache has been normalized, sending merged response');
@@ -249,6 +251,7 @@ class QuellCache {
 
         // if queryObject is empty, there is nothing left to query, can directly send information from cache
         // console.log('Returning response and saving it to res.locals, if query obj is empty, then all data is in cache');
+        cacheResponse.cached = true;
         res.locals.queryResponse = { ...cacheResponse };
         return next();
       }
@@ -256,9 +259,13 @@ class QuellCache {
   }
 
 
-      updateIdCache(objName, key) {
-        //updateIDcache with what cache is updated with
-        idCache[objName] = key;
+      updateIdCache(objName, key, currName) {
+        //update ID cache under key of currName
+        if (!idCache[currName]) {
+          idCache[currName] = {};
+        }
+        idCache[currName][objName] = key;
+        // idCache[objName] = key;
       }
 
       // checkIdCache(objName) {
@@ -783,14 +790,16 @@ class QuellCache {
         let cacheID = subID
           ? subID
           : this.generateCacheID(prototype[typeKey]);
+        // console.log('prototype and prototype[typekey:')
         // console.log(prototype)
         // console.log(prototype[typeKey])
-        if (idCache[cacheID]) {
-          cacheID = idCache[cacheID]
+        const keyName = prototype[typeKey].__args.name
+        if (idCache[keyName] && idCache[keyName][cacheID]) {
+          cacheID = idCache[keyName][cacheID]
         }
         const test = cacheID.charAt(0).toUpperCase() + cacheID.slice(1);
-        if (idCache[test]) {
-          cacheID = idCache[test]
+        if (idCache[keyName] && idCache[keyName][test]) {
+          cacheID = idCache[keyName][test]
         }
         console.log('in buildfromcache, cacheID:', cacheID)
         const cacheResponse = await this.getFromRedis(cacheID);
@@ -848,6 +857,7 @@ class QuellCache {
                   prototype[typeKey][property] = false;
                 }
               }
+              // console.log("here line 851!!")
               itemFromCache[typeKey][i] = tempObj;
             }
             // if there is nothing in the cache for this key, then toggle all fields to false so it is fetched later
@@ -886,7 +896,7 @@ class QuellCache {
         }
         // if this field is a nested query, then recurse the buildFromCache function and iterate through the nested query
         if (
-          // (itemFromCache === null || itemFromCache.hasOwnProperty(typeKey)) &&
+          (itemFromCache === null || itemFromCache.hasOwnProperty(typeKey)) &&
           !typeKey.includes('__') &&
           typeof prototype[typeKey] === 'object'
         ) {
@@ -1416,7 +1426,7 @@ class QuellCache {
    * @param {Object} protoField - a slice of the prototype currently being used as a template and reference for the responseData to send information to the cache
    * @param {Object} fieldsMap - another map of queries to desired data types, deprecated but untested
    */
-  async normalizeForCache(responseData, map = {}, protoField, fieldsMap = {}) {
+  async normalizeForCache(responseData, map = {}, protoField, currName) {
     // console.log('inside normalizeForCache');
     console.log('response data line 1376: ' ,  responseData)
     for (const resultName in responseData) {
@@ -1428,12 +1438,15 @@ class QuellCache {
           const el = currField[i];
 
           const dataType = map[resultName];
+          
+          //console.log (currName)
 
           if (typeof el === 'object') {
             console.log('Calling normalizeForCache on line 1313 ish');
+            // console.log('currName is: ', currName)
             await this.normalizeForCache({ [dataType]: el }, map, {
               [dataType]: currProto,
-            });
+            }, currName)
           }
         }
       } else if (typeof currField === 'object') {
@@ -1456,23 +1469,35 @@ class QuellCache {
             !currProto.__id &&
             (key === 'id' || key === '_id' || key === 'ID' || key === 'Id')
           ) {
-            console.log('cacheid before line 1415' + cacheID)
+            //if crurrname is undefined, assign to responseData at cacheid to lower case at name
+            if (responseData[cacheID.toLowerCase()]) {
+              const responseDataAtCacheID = responseData[cacheID.toLowerCase()]
+              currName = responseDataAtCacheID.name;
+              // console.log("currName: ",currName)
+            }
+            //if the responseData at cacheid to lower case at name is not undefined, store under name variable and copy logic of writing to cache
+              //want to update cache with same things, all stored under name
+            // console.log('cacheid before line 1415' + cacheID)
+            // console.log("RESPONSEDATA")
+            // console.log(responseData)
             const cacheIDForIDCache = cacheID;
             console.log(cacheIDForIDCache)
             cacheID += `--${currField[key]}`;
             console.log('cacheid line 1415ish: ' + cacheID)
             //call idcache here idCache(cacheIDForIDCache, cacheID)
-            this.updateIdCache(cacheIDForIDCache, cacheID);
+            // console.log('currName: ', currName)
+            this.updateIdCache(cacheIDForIDCache, cacheID, currName);
             console.log('idCache: ', idCache)
           }
           fieldStore[key] = currField[key];
 
           // if object, recurse normalizeForCache assign in that object
           if (typeof currField[key] === 'object') {
-            console.log('Normalizing for Cache when currField is an object, line 1346ish');
+            // console.log('Calling normalizeForCache, line 1346ish');
+            // console.log('currName is: ', currName)
             await this.normalizeForCache({ [key]: currField[key] }, map, {
               [key]: protoField[resultName][key],
-            });
+            }, currName);
           }
         }
         console.log("writing cache ID to cache near 1353:", cacheID)

@@ -138,7 +138,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
     const startTime = (new Date()).getTime();
     Quellify('/graphql', query, { maxDepth, maxCost })
       .then(res => {
-        // console.log('res[0]:', res[0])
+        console.log('res[0]:', res[0])
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
       const queryType: string = selectedQuery;
@@ -208,7 +208,8 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
     const startTime = (new Date()).getTime();
     Quellify('/graphql', query, { maxDepth, maxCost })
       .then(res => {
-        // console.log('res[0]:', res[0])
+        console.log('res[0]:', res[0]);
+        console.log('res[1]:', res[1]);
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
       const queryType: string = selectedQuery;
