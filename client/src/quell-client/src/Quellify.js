@@ -100,9 +100,10 @@ async function Quellify(endPoint, query, costOptions) {
       //add query to IDCache so that the query returns the $loki index
       IDCache[query] = addedEntry.$loki;
       console.log('from line 101, addedEntry: ', addedEntry)
-        if (parsedData.cached === true) {
-          return [addedEntry, true]
-        }
+        // if (parsedData.cached === true) {
+        //   return [addedEntry, false, true];
+        // }
+      
       return [addedEntry, false];
     }
   }
