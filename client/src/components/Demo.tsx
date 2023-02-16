@@ -22,6 +22,9 @@ const Demo = memo(() => {
   const [ maxDepth, setDepth ] = useState<string>('10');
   const [ maxCost, setCost ] = useState<string>('50');
   const [ isToggled, setIsToggled ] = useState<boolean>(false);
+  const [ response, setResponse ] = useState<string>('');
+  const [ cacheHit, setCacheHit ] = useState<number>(0);
+  const [ cacheMiss, setCacheMiss ] = useState<number>(0);
 
 
   useEffect(() => {
@@ -60,10 +63,14 @@ if (isToggled) {
          query={query} setQuery={setQuery} 
          queryTypes={queryTypes} 
          addQueryTypes={addQueryTypes}
+         cacheHit={cacheHit}
+         cacheMiss={cacheMiss}
+         setCacheHit={setCacheHit}
+         setCacheMiss={setCacheMiss}
         />
         <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
         <div className="demoRight">
-          <CacheControlsServer setDepth={setDepth} setCost={setCost} addResponseTimes={addResponseTimes}/>
+          <CacheControlsServer setDepth={setDepth} setCost={setCost} addResponseTimes={addResponseTimes} cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss} />
           <Divider orientation="horizontal" />
           <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
           
@@ -105,10 +112,14 @@ if (isToggled) {
                query={query} setQuery={setQuery} 
                queryTypes={queryTypes} 
                addQueryTypes={addQueryTypes}
+               cacheHit={cacheHit}
+               cacheMiss={cacheMiss}
+               setCacheHit={setCacheHit}
+               setCacheMiss={setCacheMiss}
               />
               <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
               <div className="demoRight">
-                <CacheControls setDepth={setDepth} setCost={setCost} addResponseTimes={addResponseTimes}/>
+                <CacheControls setDepth={setDepth} setCost={setCost} addResponseTimes={addResponseTimes}cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss}/>
                 <Divider orientation="horizontal" />
                 <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
                 
@@ -125,12 +136,12 @@ if (isToggled) {
       }
 });
 
-function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
+function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: QueryDemoProps) {
   // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
-  const [ cacheHit, setCacheHit ] = useState<number>(0);
-  const [ cacheMiss, setCacheMiss ] = useState<number>(0);
+  // const [ cacheHit, setCacheHit ] = useState<number>(0);
+  // const [ cacheMiss, setCacheMiss ] = useState<number>(0);
   
 
   function submitQuery() {
@@ -138,7 +149,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
     const startTime = (new Date()).getTime();
     Quellify('/graphql', query, { maxDepth, maxCost })
       .then(res => {
-        // console.log('res[0]:', res[0])
+        console.log('res[0]:', res[0])
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
       const queryType: string = selectedQuery;
@@ -194,58 +205,61 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
   )
 }
 
-function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
+function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: QueryDemoProps) {
   // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
-  const [ cacheHit, setCacheHit ] = useState<number>(0);
-  const [ cacheMiss, setCacheMiss ] = useState<number>(0);
+  // const [ cacheHit, setCacheHit ] = useState<number>(0);
+  // const [ cacheMiss, setCacheMiss ] = useState<number>(0);
   
 
   function submitQueryServer() {
     console.log("Checking Query in Submit Query Server: ", typeof query);
     clearLokiCache();
     const startTime = (new Date()).getTime();
-    Quellify('/graphql', query, { maxDepth, maxCost })
-      .then(res => {
-        // console.log('res[0]:', res[0])
+    // Quellify('/graphql', query, { maxDepth, maxCost })
+    //   .then(res => {
+    //     console.log('res[0]:', res[0]);
+    //     console.log('res[1]:', res[1]);
+    //   const responseTime: number = (new Date()).getTime() - startTime;
+    //   addResponseTimes([...responseTimes, responseTime]);
+    //   const queryType: string = selectedQuery;
+    //   addQueryTypes([...queryTypes, queryType])
+    //   setResponse(JSON.stringify(res[0], null, 2));
+
+    //   if (res[2] === false) {
+    //     setCacheMiss(cacheMiss + 1);
+        
+    //   } else if (res[2] === true) {
+    //     setCacheHit(cacheHit + 1);
+    //   }
+    // })
+    //   .catch((err) => {
+    //     console.log("Error in fetch: ", err)
+    //     addErrorAlerts((prev) => [...prev, 1])
+    //   })
+
+      const fetchOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: query, costOptions: { maxDepth, maxCost } }),
+      };
+
+  fetch('/graphql', fetchOptions)
+    .then(res => res.json())
+    .then(res => {
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
-      const queryType: string = selectedQuery;
-      addQueryTypes([...queryTypes, queryType])
-      setResponse(JSON.stringify(res[0], null, 2));
-
-      if (res[1] === false) {
-        setCacheMiss(cacheMiss + 1);
-        
-      } else if (res[1] === true) {
-        setCacheHit(cacheHit + 1);
-      }
+      setResponse(JSON.stringify(res.data, null, 2));
+      if (res.cached === true) setCacheHit(cacheHit + 1);
+      else setCacheMiss(cacheMiss + 1);
     })
-      .catch((err) => {
-        console.log("Error in fetch: ", err)
-        addErrorAlerts((prev) => [...prev, 1])
-      })
-
-  //     const fetchOptions = {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ query: query }),
-  //     };
-
-  // fetch('/graphql', fetchOptions)
-  //   .then(res => res.json())
-  //   .then(res => {
-  //     const responseTime: number = (new Date()).getTime() - startTime;
-  //     addResponseTimes([...responseTimes, responseTime]);
-  //     setResponse(JSON.stringify(res, null, 2));
-  //   })
-  //   .catch((err) => {
-  //     console.log("Error in fetch: ", err);
-  //     addErrorAlerts((prev) => [...prev, 1]);
-  //   })
+    .catch((err) => {
+      console.log("Error in fetch: ", err);
+      addErrorAlerts((prev) => [...prev, 1]);
+    })
   }
 
   // function resetGraph() {
@@ -309,12 +323,14 @@ const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls
 }
 
 
-const CacheControls = ({ setDepth, setCost, addResponseTimes}: CacheControlProps) => {
+const CacheControls = ({ setDepth, setCost, addResponseTimes, setCacheHit, setCacheMiss, cacheHit, cacheMiss }: CacheControlProps) => {
 
   function resetGraph() {
     console.log('resetting the graph');
     addResponseTimes([]);
     clearLokiCache();
+    setCacheHit(cacheHit = 0);
+    setCacheMiss(cacheMiss = 0);
     // fetch('/clearCache')
     // .then((res) => console.log('Cleared Server Cache!'));
   }
@@ -338,7 +354,7 @@ const CacheControls = ({ setDepth, setCost, addResponseTimes}: CacheControlProps
   )
 }
 
-const CacheControlsServer = ({ setDepth, setCost, addResponseTimes }: CacheControlProps) => {
+const CacheControlsServer = ({ setDepth, setCost, addResponseTimes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: CacheControlProps) => {
 
   function resetGraph() {
     console.log('resetting the graph');
@@ -346,6 +362,8 @@ const CacheControlsServer = ({ setDepth, setCost, addResponseTimes }: CacheContr
     clearLokiCache();
     fetch('/clearCache')
     .then((res) => console.log('Cleared Server Cache!'));
+    setCacheHit(cacheHit = 0);
+    setCacheMiss(cacheMiss = 0);
   }
 
   const clearServerCache = () => {
@@ -367,7 +385,7 @@ const CacheControlsServer = ({ setDepth, setCost, addResponseTimes }: CacheContr
         justifyContent: 'center',
         width: '60%',
       }}>
-        <Limit setDepth={setDepth} setCost={setCost} addResponseTimes= {addResponseTimes}/>
+        <Limit setDepth={setDepth} setCost={setCost} addResponseTimes= {addResponseTimes} cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss}/>
       </div>
        {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
        <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
@@ -454,7 +472,6 @@ interface BasicSelectProps {
   selectedQuery: string;
 }
 
-
 interface QueryDemoProps {
   responseTimes: number[];
   addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
@@ -467,17 +484,20 @@ interface QueryDemoProps {
   addQueryTypes: React.Dispatch<React.SetStateAction<any[]>>;
   maxDepth: string;
   maxCost: string;
+  cacheHit: number;
+  cacheMiss: number;
+  setCacheHit: Dispatch<SetStateAction<number>>
+  setCacheMiss: Dispatch<SetStateAction<number>>
 }
 
 interface CacheControlProps {
   setDepth: (val: string) => void;
   setCost: (val: string) => void;
   addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
+  cacheHit: number;
+  cacheMiss: number;
+  setCacheHit: Dispatch<SetStateAction<number>>
+  setCacheMiss: Dispatch<SetStateAction<number>>
 }
-
-
- 
-
-
 
 export default Demo;
