@@ -9,7 +9,7 @@ export function HitMiss({cacheMiss, cacheHit}: HitMissProps) {
     console.log('inside hitmiss component...cacheMiss = ', cacheMiss)
     console.log('inside hitmiss component....cacheHit= ', cacheHit)
      const data = {
-      labels: ['Client Cache Hit', 'Client Cache Miss'],
+      labels: ['Cache Hit', 'Cache Miss'],
       datasets: [
         {
           label: 'Hit or Miss',

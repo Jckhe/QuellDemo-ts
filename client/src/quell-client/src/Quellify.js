@@ -77,6 +77,7 @@ async function Quellify(endPoint, query, costOptions) {
     // check IDCache with query, if query returns the $loki ID, find the results for searching the LokiDBCache
     //lokiCache to see if this call has a $loki associated with it. if so, retrieve and return it
     if (IDCache[query]) {
+      console.log('id cache: ' , IDCache)
       console.log('CACHE HIT data exists in loki cache');
 
       // grab the $loki ID from the IDCache
@@ -99,7 +100,10 @@ async function Quellify(endPoint, query, costOptions) {
       //add query to IDCache so that the query returns the $loki index
       IDCache[query] = addedEntry.$loki;
       console.log('from line 101, addedEntry: ', addedEntry)
-
+        // if (parsedData.cached === true) {
+        //   return [addedEntry, false, true];
+        // }
+      
       return [addedEntry, false];
     }
   }

@@ -9,6 +9,7 @@ import { HitMiss } from './HitMiss'
 import { SuccessfulQuery, BadQuery } from './Alert';
 import { Quellify, clearLokiCache } from '../quell-client/src/Quellify.js';
 import { styled } from '@mui/material/styles';
+import { width } from '@mui/system';
 
 
 
@@ -22,6 +23,9 @@ const Demo = memo(() => {
   const [ maxCost, setCost ] = useState<string>('50');
   const [ ipRate, setIPRate ] = useState<string>('2');
   const [ isToggled, setIsToggled ] = useState<boolean>(false);
+  const [ response, setResponse ] = useState<string>('');
+  const [ cacheHit, setCacheHit ] = useState<number>(0);
+  const [ cacheMiss, setCacheMiss ] = useState<number>(0);
 
 
   useEffect(() => {
@@ -61,10 +65,14 @@ if (isToggled) {
          query={query} setQuery={setQuery} 
          queryTypes={queryTypes} 
          addQueryTypes={addQueryTypes}
+         cacheHit={cacheHit}
+         cacheMiss={cacheMiss}
+         setCacheHit={setCacheHit}
+         setCacheMiss={setCacheMiss}
         />
         <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
         <div className="demoRight">
-          <CacheControlsServer setDepth={setDepth} setCost={setCost} setIPRate={setIPRate}/>
+          <CacheControlsServer setDepth={setDepth} setCost={setCost} setIPRate={setIPRate} addResponseTimes={addResponseTimes} cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss} />
           <Divider orientation="horizontal" />
           <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
           
@@ -107,10 +115,14 @@ if (isToggled) {
                query={query} setQuery={setQuery} 
                queryTypes={queryTypes} 
                addQueryTypes={addQueryTypes}
+               cacheHit={cacheHit}
+               cacheMiss={cacheMiss}
+               setCacheHit={setCacheHit}
+               setCacheMiss={setCacheMiss}
               />
               <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
               <div className="demoRight">
-                <CacheControls setDepth={setDepth} setCost={setCost} setIPRate={setIPRate}/>
+                <CacheControls setDepth={setDepth} setCost={setCost} setIPRate={setIPRate} addResponseTimes={addResponseTimes}cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss}/>
                 <Divider orientation="horizontal" />
                 <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
                 
@@ -127,12 +139,12 @@ if (isToggled) {
       }
 });
 
-function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
+function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: QueryDemoProps) {
   // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
-  const [ cacheHit, setCacheHit ] = useState<number>(0);
-  const [ cacheMiss, setCacheMiss ] = useState<number>(0);
+  // const [ cacheHit, setCacheHit ] = useState<number>(0);
+  // const [ cacheMiss, setCacheMiss ] = useState<number>(0);
   
 
   function submitQuery() {
@@ -140,7 +152,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
     const startTime = (new Date()).getTime();
     Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
       .then(res => {
-        // console.log('res[0]:', res[0])
+        console.log('res[0]:', res[0])
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
       const queryType: string = selectedQuery;
@@ -160,19 +172,19 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
       })
   }
 
-  function resetGraph() {
-    console.log('resetting the graph');
-    addResponseTimes([]);
-    clearLokiCache();
-    fetch('/clearCache')
-    .then((res) => console.log('Cleared Server Cache!'));
-  }
+  // function resetGraph() {
+  //   console.log('resetting the graph');
+  //   addResponseTimes([]);
+  //   clearLokiCache();
+  //   fetch('/clearCache')
+  //   .then((res) => console.log('Cleared Server Cache!'));
+  // }
 
 
   return (
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQuery} />
-      <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
+      {/* <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button> */}
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
       <h3>See your query results: </h3>
       <div style={{width: '85%', border: 'none',  overflow: 'hidden', borderRadius: '5px'}}> 
@@ -196,73 +208,76 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
   )
 }
 
-function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
+function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: QueryDemoProps) {
   // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
-  const [ cacheHit, setCacheHit ] = useState<number>(0);
-  const [ cacheMiss, setCacheMiss ] = useState<number>(0);
+  // const [ cacheHit, setCacheHit ] = useState<number>(0);
+  // const [ cacheMiss, setCacheMiss ] = useState<number>(0);
   
 
   function submitQueryServer() {
     console.log("Checking Query in Submit Query Server: ", typeof query);
     clearLokiCache();
     const startTime = (new Date()).getTime();
-    Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
-      .then(res => {
-        // console.log('res[0]:', res[0])
+    // Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
+    //   .then(res => {
+    //     console.log('res[0]:', res[0]);
+    //     console.log('res[1]:', res[1]);
+    //   const responseTime: number = (new Date()).getTime() - startTime;
+    //   addResponseTimes([...responseTimes, responseTime]);
+    //   const queryType: string = selectedQuery;
+    //   addQueryTypes([...queryTypes, queryType])
+    //   setResponse(JSON.stringify(res[0], null, 2));
+
+    //   if (res[2] === false) {
+    //     setCacheMiss(cacheMiss + 1);
+        
+    //   } else if (res[2] === true) {
+    //     setCacheHit(cacheHit + 1);
+    //   }
+    // })
+    //   .catch((err) => {
+    //     console.log("Error in fetch: ", err)
+    //     addErrorAlerts((prev) => [...prev, 1])
+    //   })
+
+      const fetchOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: query, costOptions: { maxDepth, maxCost, ipRate } }),
+      };
+
+  fetch('/graphql', fetchOptions)
+    .then(res => res.json())
+    .then(res => {
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
-      const queryType: string = selectedQuery;
-      addQueryTypes([...queryTypes, queryType])
-      setResponse(JSON.stringify(res[0], null, 2));
-
-      if (res[1] === false) {
-        setCacheMiss(cacheMiss + 1);
-        
-      } else if (res[1] === true) {
-        setCacheHit(cacheHit + 1);
-      }
+      setResponse(JSON.stringify(res.data, null, 2));
+      if (res.cached === true) setCacheHit(cacheHit + 1);
+      else setCacheMiss(cacheMiss + 1);
     })
-      .catch((err) => {
-        console.log("Error in fetch: ", err)
-        addErrorAlerts((prev) => [...prev, 1])
-      })
-
-  //     const fetchOptions = {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ query: query }),
-  //     };
-
-  // fetch('/graphql', fetchOptions)
-  //   .then(res => res.json())
-  //   .then(res => {
-  //     const responseTime: number = (new Date()).getTime() - startTime;
-  //     addResponseTimes([...responseTimes, responseTime]);
-  //     setResponse(JSON.stringify(res, null, 2));
-  //   })
-  //   .catch((err) => {
-  //     console.log("Error in fetch: ", err);
-  //     addErrorAlerts((prev) => [...prev, 1]);
-  //   })
+    .catch((err) => {
+      console.log("Error in fetch: ", err);
+      addErrorAlerts((prev) => [...prev, 1]);
+    })
   }
 
-  function resetGraph() {
-    console.log('resetting the graph');
-    addResponseTimes([]);
-    clearLokiCache();
-    fetch('/clearCache')
-    .then((res) => console.log('Cleared Server Cache!'));
-  }
+  // function resetGraph() {
+  //   console.log('resetting the graph');
+  //   addResponseTimes([]);
+  //   clearLokiCache();
+  //   fetch('/clearCache')
+  //   .then((res) => console.log('Cleared Server Cache!'));
+  // }
 
 
   return (
     <div spellCheck='false' className="demoLeft"> 
       <DemoControls selectedQuery={selectedQuery} setQueryChoice={setQueryChoice} submitQuery={submitQueryServer} />
-      <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
+      {/* <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button> */}
       <QueryEditor selectedQuery={selectedQuery} setQuery={setQuery} />
       <h3 style={{paddingBottom: '1rem'}}>See your query results: </h3>
       <div style={{width: '85%', border: 'none', marginTop: '-1.5em', overflow: 'hidden', borderRadius: '5px'}}>
@@ -311,7 +326,17 @@ const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls
 }
 
 
-const CacheControls = ({ setDepth, setCost, setIPRate }: CacheControlProps) => {
+const CacheControls = ({ setDepth, setCost, setIPRate, addResponseTimes, setCacheHit, setCacheMiss, cacheHit, cacheMiss }: CacheControlProps) => {
+
+  function resetGraph() {
+    console.log('resetting the graph');
+    addResponseTimes([]);
+    clearLokiCache();
+    setCacheHit(cacheHit = 0);
+    setCacheMiss(cacheMiss = 0);
+    // fetch('/clearCache')
+    // .then((res) => console.log('Cleared Server Cache!'));
+  }
 
   const clearClientCache = () => {
     return clearLokiCache();
@@ -321,6 +346,7 @@ const CacheControls = ({ setDepth, setCost, setIPRate }: CacheControlProps) => {
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
         <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} onClick={clearClientCache} color="secondary" variant='contained'>Clear Client Cache</Button>
+        <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>      
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
       {/* <Limit setDepth={setDepth} setCost={setCost}/> */}
@@ -331,7 +357,17 @@ const CacheControls = ({ setDepth, setCost, setIPRate }: CacheControlProps) => {
   )
 }
 
-const CacheControlsServer = ({ setDepth, setCost, setIPRate }: CacheControlProps) => {
+const CacheControlsServer = ({ setDepth, setCost, setIPRate, addResponseTimes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: CacheControlProps) => {
+
+  function resetGraph() {
+    console.log('resetting the graph');
+    addResponseTimes([]);
+    clearLokiCache();
+    fetch('/clearCache')
+    .then((res) => console.log('Cleared Server Cache!'));
+    setCacheHit(cacheHit = 0);
+    setCacheMiss(cacheMiss = 0);
+  }
 
   const clearServerCache = () => {
     fetch('/clearCache')
@@ -342,12 +378,21 @@ const CacheControlsServer = ({ setDepth, setCost, setIPRate }: CacheControlProps
     <div className="cacheControlContainer">
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
         <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
+        <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
       </Stack>
-      <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
-      <Limit setDepth={setDepth} setCost={setCost} setIPRate={setIPRate}/>
+      {/* <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={2}> */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '60%',
+      }}>
+        <Limit setDepth={setDepth} setCost={setCost} setIPRate={setIPRate} addResponseTimes= {addResponseTimes} cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss}/>
+      </div>
        {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
        <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
-      </Stack>
+      {/* </Stack> */}
     </div>
   )
 }
@@ -388,7 +433,7 @@ function QuerySelect({setQueryChoice, selectedQuery} : BasicSelectProps) {
 const StyledDiv = styled('div')(({ theme }) => ({
   ...theme.typography.button,
   backgroundColor: theme.palette.primary.main,
-  padding: theme.spacing(0.55, 1.75),
+  // padding: theme.spacing(0.55, 1.75),
   // border: '1px solid black',
   borderRadius: '5px',
   fontSmooth: 'always',
@@ -402,14 +447,13 @@ function Limit({ setDepth, setCost, setIPRate }: CacheControlProps) {
     <div>
       <StyledDiv style={{marginBottom: '10px'}}>
         <form>
-          <label>Max Depth:</label>
-          {/* each input will have onChange event handler that invokes function to update state */}
+          <label>Max Depth: </label>
           <input 
-          // style={{paddingLeft: '50%'}} 
+          style={{width: '20%', margin: '0px, 0px, 0px, 20%', backgroundColor: '#999', color: '#FFF'}} 
           type="number" placeholder="10" onChange = {(e) => {setDepth(e.target.value)}}/>
         </form>
       </StyledDiv>
-      <StyledDiv style={{marginBottom: '10px'}}>
+      <StyledDiv style={{marginBottom: '10px'}} >
         <form>
           <label>Max Cost:</label>
           <input type="number" placeholder="50" onChange = {(e) => {setCost(e.target.value)}}/>
@@ -443,12 +487,21 @@ interface QueryDemoProps {
   maxDepth: string;
   maxCost: string;
   ipRate: string;
+  cacheHit: number;
+  cacheMiss: number;
+  setCacheHit: Dispatch<SetStateAction<number>>
+  setCacheMiss: Dispatch<SetStateAction<number>>
 }
 
 interface CacheControlProps {
   setDepth: (val: string) => void;
   setCost: (val: string) => void;
   setIPRate: (val: string) => void;
+  addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
+  cacheHit: number;
+  cacheMiss: number;
+  setCacheHit: Dispatch<SetStateAction<number>>
+  setCacheMiss: Dispatch<SetStateAction<number>>
 }
 
 export default Demo;
