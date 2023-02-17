@@ -53,8 +53,26 @@ class QuellCache {
   
   }
 
+   /**
+   * A redis-based IP rate limiter method. It:
+   *    - receives the ipRate in requests per second from the request object on the front-end,
+   *    - if there is no ipRate set on front-end, it'll default to the value in the defaultCostParameters,
+   *    - creates a key using the IP address and current time in seconds,
+   *    - increments the value at this key for each new call received,
+   *    - if the value of calls is greater than the ipRate limit, it will not process the query,
+   *    - keys are set to expire after 1 second
+   *  @param {Object} req - Express request object, including request body with GraphQL query string
+   *  @param {Object} res - Express response object, will carry query response to next middleware
+   *  @param {Function} next - Express next middleware function, invoked when QuellCache completes its work
+   */
   async rateLimiter (req, res, next) {
-    const ip = req.ip;
+    let ipRates;
+     //ipRate can be reassigned to get ipRate limit from req.body if user selects requests limit
+     if (req.body.costOptions.ipRate) ipRates = req.body.costOptions.ipRate;
+     //  else ipRates = this.costParameters.ipRate;
+     //return error if no query in request.
+     if (!req.body.query) return res.status(400);
+     const ip = req.ip;
      const now = Math.floor(Date.now() / 1000);
      const ipKey = `${ip}:${now}`;
 
@@ -66,14 +84,19 @@ class QuellCache {
       }
 
       this.redisCache.expire(ipKey, 1);
+      console.error('Redis cache incremented:', ipKey, count);
       return next();
     });
 
     const calls = await this.getFromRedis(ipKey);
 
-    if (calls > this.costParameters.ipRate) {
+    console.log('CALLS>>>>> ', calls);
+    console.log('IPRATE >>>>>> ', ipRates);
+
+    if (calls > ipRates) {
       console.log('TOO MANY REQUESTS:!!!!!!!!!! STOP THE MADNESS!!!!');
-      return next('EREROR');  
+      console.log('calls:', calls, 'ipRate:', ipRates);
+      return next('ERROR');  
     }
     
     return next();
@@ -94,7 +117,25 @@ class QuellCache {
    */
   async query(req, res, next) {
     console.log(Date());
+    // console.log('IPRATE >>>>>> ', this.costParameters.ipRate);
     //  console.log('in query');
+
+    this.redisCache.keys('*')
+      .then((response) => {
+        console.log('REDIS KEYS: ', response);
+        this.redisCache.mGet(response)
+        .then((response) => {
+          console.log('REDIS VALUES: ', response);
+          })
+        .catch((err) => {
+          // console.log('Error inside get keys', err);
+          return next(err);
+        });
+        })
+      .catch((err) => {
+        // console.log('Error inside get keys', err);
+        return next(err);
+      });
     
     // handle request without query
     if (!req.body.query) {
@@ -112,9 +153,9 @@ class QuellCache {
     // the response prototype is used as a template for most operations in quell including caching, building modified requests, and more
     const { proto, operationType, frags } = res.locals.parsedAST ? res.locals.parsedAST : this.parseAST(AST);
 
-    console.log('ProtoObject from from parseAST, line 69ish, proto', proto);
-    console.log('operationtype from parseAST, operationType:', operationType);
-    console.log('frags Obj from parseAST, frags:', frags);
+    // console.log('ProtoObject from from parseAST, line 69ish, proto', proto);
+    // console.log('operationtype from parseAST, operationType:', operationType);
+    // console.log('frags Obj from parseAST, frags:', frags);
     
 
     // pass-through for queries and operations that QuellCache cannot handle
@@ -234,6 +275,7 @@ class QuellCache {
         // console.log('newQueryString:', newQueryString);
         graphql({ schema: this.schema, source: newQueryString })
           .then(async (databaseResponseRaw) => {
+            console.log('!!!!!!NOT CACHED!!!!!!');
             // databaseResponse must be parsed in order to join with cacheResponse before sending back to user
             // console.log('inside GQL query, raw database response:', databaseResponseRaw)
             const databaseResponse = JSON.parse(

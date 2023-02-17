@@ -21,7 +21,7 @@ const Demo = memo(() => {
   const [ queryTypes, addQueryTypes ] = useState<string[]>([]);
   const [ maxDepth, setDepth ] = useState<string>('10');
   const [ maxCost, setCost ] = useState<string>('50');
-  const [ ipRate, setIPRate ] = useState<string>('2');
+  const [ ipRate, setIPRate ] = useState<number>(22);
   const [ isToggled, setIsToggled ] = useState<boolean>(false);
   const [ response, setResponse ] = useState<string>('');
   const [ cacheHit, setCacheHit ] = useState<number>(0);
@@ -456,13 +456,17 @@ function Limit({ setDepth, setCost, setIPRate }: CacheControlProps) {
       <StyledDiv style={{marginBottom: '10px'}} >
         <form>
           <label>Max Cost:</label>
-          <input type="number" placeholder="50" onChange = {(e) => {setCost(e.target.value)}}/>
+          <input 
+          style={{width: '20%', margin: '0px, 0px, 0px, 20%', backgroundColor: '#999', color: '#FFF'}}
+          type="number" placeholder="50" onChange = {(e) => {setCost(e.target.value)}}/>
         </form>
       </StyledDiv>
       <StyledDiv>
         <form>
           <label>Requests /s:</label>
-          <input type="number" placeholder="2" onChange = {(e) => {setIPRate(e.target.value)}}/>
+          <input 
+          style={{width: '20%', margin: '0px, 0px, 0px, 20%', backgroundColor: '#999', color: '#FFF'}}
+          type="number" placeholder="22" onChange = {(e) => {setIPRate(+e.target.value)}}/>
         </form>
       </StyledDiv>
     </div>
@@ -496,7 +500,7 @@ interface QueryDemoProps {
 interface CacheControlProps {
   setDepth: (val: string) => void;
   setCost: (val: string) => void;
-  setIPRate: (val: string) => void;
+  setIPRate: (val: number) => void;
   addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
   cacheHit: number;
   cacheMiss: number;
