@@ -1,4 +1,3 @@
-
 const redis = require('redis');
 const { parse } = require('graphql/language/parser');
 const { visit, BREAK } = require('graphql/language/visitor');
@@ -10,7 +9,8 @@ const defaultCostParams = {
   objectCost: 2, // cost of retrieving an object
   scalarCost: 1, // cost of retrieving a scalar
   depthCostFactor: 1.5, // multiplicative cost of each depth level
-  depthMax: 10 //depth limit parameter
+  depthMax: 10, //depth limit parameter
+  ipRate: 3 // requests allowed per second
 }
 
 
@@ -21,6 +21,7 @@ class QuellCache {
       this.costParameters = Object.assign(defaultCostParams, costParameters);
       this.depthLimit = this.depthLimit.bind(this);
       this.costLimit = this.costLimit.bind(this);
+      this.rateLimiter = this.rateLimiter.bind(this);
       this.queryMap = this.getQueryMap(schema);
       this.mutationMap = this.getMutationMap(schema);
       this.fieldsMap = this.getFieldsMap(schema);
@@ -46,6 +47,33 @@ class QuellCache {
       });
   
   }
+
+  async rateLimiter (req, res, next) {
+    const ip = req.ip;
+     const now = Math.floor(Date.now() / 1000);
+     const ipKey = `${ip}:${now}`;
+
+     this.redisCache.incr(ipKey, (err, count) => {
+      if (err) {
+        console.error(err);
+        // return res.status(500).send('Internal Server Error');
+        return next('Internal Server Error in redis :(')
+      }
+
+      this.redisCache.expire(ipKey, 1);
+      return next();
+    });
+
+    const calls = await this.getFromRedis(ipKey);
+
+    if (calls > this.costParameters.ipRate) {
+      console.log('TOO MANY REQUESTS:!!!!!!!!!! STOP THE MADNESS!!!!');
+      return next('EREROR');  
+    }
+    
+    return next();
+  } 
+
   /**
    * The class's controller method. It:
    *    - reads the query string from the request object,
@@ -60,7 +88,25 @@ class QuellCache {
    *  @param {Function} next - Express next middleware function, invoked when QuellCache completes its work
    */
   async query(req, res, next) {
-     console.log('in query');
+    console.log('NEW QUERY >>>>  ', Date());
+
+    this.redisCache.keys('*')
+      .then((response) => {
+        console.log('REDIS KEYS: ', response);
+        this.redisCache.mGet(response)
+        .then((response) => {
+          console.log('REDIS VALUES: ', response);
+          })
+        .catch((err) => {
+          // console.log('Error inside get keys', err);
+          return next(err);
+        });
+        })
+      .catch((err) => {
+        // console.log('Error inside get keys', err);
+        return next(err);
+      });
+
     
     // handle request without query
     if (!req.body.query) {
