@@ -7,15 +7,11 @@ const mongoose = require('mongoose');
 // const schema = makeExecutableSchema({typeDefs, resolvers});
 const QuellCache = require('../quell-server/src/quell');
 const quellCache = new QuellCache(schema, 13680, 3600);
-// const redis = require('redis');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors());
-
-// const cache = redis.createClient();
-
 
 
 mongoose
@@ -30,8 +26,6 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(express.static("./dist"));
-
-//
 
 app.use('/graphql', quellCache.rateLimiter, quellCache.costLimit, quellCache.depthLimit, quellCache.query, (req, res) => {
   if (res.locals.queryErr) return res.status(200).json(res.locals.queryErr);

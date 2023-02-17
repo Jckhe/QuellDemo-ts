@@ -20,6 +20,7 @@ const Demo = memo(() => {
   const [ queryTypes, addQueryTypes ] = useState<string[]>([]);
   const [ maxDepth, setDepth ] = useState<string>('10');
   const [ maxCost, setCost ] = useState<string>('50');
+  const [ ipRate, setIPRate ] = useState<string>('2');
   const [ isToggled, setIsToggled ] = useState<boolean>(false);
 
 
@@ -51,6 +52,7 @@ if (isToggled) {
         <QueryDemoServer 
          maxDepth={maxDepth}
          maxCost={maxCost} 
+         ipRate={ipRate}
          addErrorAlerts={addErrorAlerts} 
          responseTimes={responseTimes} 
          addResponseTimes={addResponseTimes} 
@@ -62,7 +64,7 @@ if (isToggled) {
         />
         <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
         <div className="demoRight">
-          <CacheControlsServer setDepth={setDepth} setCost={setCost}/>
+          <CacheControlsServer setDepth={setDepth} setCost={setCost} setIPRate={setIPRate}/>
           <Divider orientation="horizontal" />
           <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
           
@@ -96,6 +98,7 @@ if (isToggled) {
               <QueryDemo 
                maxDepth={maxDepth}
                maxCost={maxCost} 
+               ipRate={ipRate}
                addErrorAlerts={addErrorAlerts} 
                responseTimes={responseTimes} 
                addResponseTimes={addResponseTimes} 
@@ -107,7 +110,7 @@ if (isToggled) {
               />
               <Divider sx={{zIndex: '50'}} flexItem={true} orientation="vertical" />
               <div className="demoRight">
-                <CacheControls setDepth={setDepth} setCost={setCost}/>
+                <CacheControls setDepth={setDepth} setCost={setCost} setIPRate={setIPRate}/>
                 <Divider orientation="horizontal" />
                 <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
                 
@@ -124,7 +127,7 @@ if (isToggled) {
       }
 });
 
-function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
+function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
   // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
@@ -135,7 +138,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
   function submitQuery() {
     console.log("Checking Query in Submit Query: ", typeof query)
     const startTime = (new Date()).getTime();
-    Quellify('/graphql', query, { maxDepth, maxCost })
+    Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
       .then(res => {
         // console.log('res[0]:', res[0])
       const responseTime: number = (new Date()).getTime() - startTime;
@@ -193,7 +196,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
   )
 }
 
-function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
+function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes }: QueryDemoProps) {
   // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
@@ -205,7 +208,7 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
     console.log("Checking Query in Submit Query Server: ", typeof query);
     clearLokiCache();
     const startTime = (new Date()).getTime();
-    Quellify('/graphql', query, { maxDepth, maxCost })
+    Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
       .then(res => {
         // console.log('res[0]:', res[0])
       const responseTime: number = (new Date()).getTime() - startTime;
@@ -308,7 +311,7 @@ const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls
 }
 
 
-const CacheControls = ({ setDepth, setCost }: CacheControlProps) => {
+const CacheControls = ({ setDepth, setCost, setIPRate }: CacheControlProps) => {
 
   const clearClientCache = () => {
     return clearLokiCache();
@@ -328,7 +331,7 @@ const CacheControls = ({ setDepth, setCost }: CacheControlProps) => {
   )
 }
 
-const CacheControlsServer = ({ setDepth, setCost }: CacheControlProps) => {
+const CacheControlsServer = ({ setDepth, setCost, setIPRate }: CacheControlProps) => {
 
   const clearServerCache = () => {
     fetch('/clearCache')
@@ -341,18 +344,13 @@ const CacheControlsServer = ({ setDepth, setCost }: CacheControlProps) => {
         <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
-      <Limit setDepth={setDepth} setCost={setCost}/>
+      <Limit setDepth={setDepth} setCost={setCost} setIPRate={setIPRate}/>
        {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
        <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
       </Stack>
     </div>
   )
 }
-
-
-
-
-
 
 //Query Dropdown Menu 
 function QuerySelect({setQueryChoice, selectedQuery} : BasicSelectProps) {
@@ -399,7 +397,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
 }));
 
-function Limit({ setDepth, setCost }: CacheControlProps) {
+function Limit({ setDepth, setCost, setIPRate }: CacheControlProps) {
   return(
     <div>
       <StyledDiv style={{marginBottom: '10px'}}>
@@ -411,10 +409,16 @@ function Limit({ setDepth, setCost }: CacheControlProps) {
           type="number" placeholder="10" onChange = {(e) => {setDepth(e.target.value)}}/>
         </form>
       </StyledDiv>
-      <StyledDiv>
+      <StyledDiv style={{marginBottom: '10px'}}>
         <form>
           <label>Max Cost:</label>
           <input type="number" placeholder="50" onChange = {(e) => {setCost(e.target.value)}}/>
+        </form>
+      </StyledDiv>
+      <StyledDiv>
+        <form>
+          <label>Requests /s:</label>
+          <input type="number" placeholder="2" onChange = {(e) => {setIPRate(e.target.value)}}/>
         </form>
       </StyledDiv>
     </div>
@@ -425,7 +429,6 @@ interface BasicSelectProps {
   setQueryChoice: Dispatch<SetStateAction<string>>;
   selectedQuery: string;
 }
-
 
 interface QueryDemoProps {
   responseTimes: number[];
@@ -439,16 +442,13 @@ interface QueryDemoProps {
   addQueryTypes: React.Dispatch<React.SetStateAction<any[]>>;
   maxDepth: string;
   maxCost: string;
+  ipRate: string;
 }
 
 interface CacheControlProps {
   setDepth: (val: string) => void;
   setCost: (val: string) => void;
+  setIPRate: (val: string) => void;
 }
-
-
- 
-
-
 
 export default Demo;
