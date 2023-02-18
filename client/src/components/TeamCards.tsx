@@ -31,10 +31,18 @@ import JackieHe from "../assets/images/profile_pics/QUELL-headshot JackieHe.png"
 import CeraB from "../assets/images/profile_pics/QUELL-headshot CeraB.png"
 import AlexMartinez from "../assets/images/profile_pics/QUELL-headshot AlexM.png"
 import RylanW from "../assets/images/profile_pics/QUELL-headshot w border-RylanW.png"
+import Garik from "../assets/images/profile_pics/QUELL-headshot w border-Garik.png"
 
 /* 
   Reusable component to generate each team member
 */
+const GARIKASPLUND = {
+  name: 'Garik Asplund',
+  src: Garik,
+  bio: 'Garik is a full-stack developer who loves new frameworks and runtimes! He also has a special spot for databases in all their variety. He is an avid backcountry skier and trailrunner who lives in rural northeast Oregon with his two cats, Wasabi and Ginger, and dog, Noodle.',
+  linkedin: 'https://www.linkedin.com/in/garik-asplund/',
+  github: 'https://github.com/garikAsplund',
+};
 const RYLANWESSEL = {
   name: 'Rylan Wessel',
   src: RylanW,
@@ -232,6 +240,7 @@ const JUSTINJAEGAR = {
   github: "https://github.com/justinjaeger",
 };
 const TeamArr = [
+  GARIKASPLUND,
   RYLANWESSEL,
   JACKIEHE,
   ALEXANDERMARTINEZ,
