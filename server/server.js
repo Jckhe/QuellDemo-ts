@@ -6,6 +6,7 @@ const bodyparser = require('body-parser')
 const mongoose = require('mongoose');
 // const schema = makeExecutableSchema({typeDefs, resolvers});
 const QuellCache = require('../quell-server/src/quell');
+// const quellCache = new QuellCache(schema, 13680, 3600);
 const quellCache = new QuellCache(schema, 13680, 3600);
 
 app.use(express.json());

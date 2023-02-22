@@ -64,11 +64,11 @@ const AttractionsType = new GraphQLObjectType({
 })
 
 const CityType = new GraphQLObjectType({
-  name: 'City',
+  name: 'Cities',
   fields: () => ({
     id: {type: GraphQLID},
     name: { type: GraphQLString},
-    country: { type: GraphQLString}, 
+    country: { type: GraphQLString},
     attractions: {
       type: new GraphQLList(AttractionsType),
       async resolve(parent, args) {

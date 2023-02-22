@@ -284,7 +284,7 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
           fullWidth={true}
           sx={{border: '1px solid white', borderStyle: 'inset'}}
           inputProps={{style: {fontSize: '0.9rem', width: "100%", backgroundColor: '#474f57', padding: '10px', color: 'white', fontFamily: 'Monaco'}}}
-          rows="50"
+          rows="100"
           value={response}
           >
           </TextField>
