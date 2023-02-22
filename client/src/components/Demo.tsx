@@ -123,14 +123,13 @@ if (isToggled) {
                 <CacheControls setDepth={setDepth} setCost={setCost} setIPRate={setIPRate} addResponseTimes={addResponseTimes}cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss}/>
                 <Divider orientation="horizontal" />
                 <Graph responseTimes={responseTimes} selectedQuery={selectedQuery} queryTypes={queryTypes} />
-                
               </div>
             </div>
             {responseTimes.map((el, i) => {
                 return <SuccessfulQuery key={i}/>
               })}
             {errorAlerts.map((el, i) => {
-                return <BadQuery key={i}/>
+                return <BadQuery errorMessage={el} key={i}/>
               })}
           </div>
         )
@@ -146,7 +145,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
     Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
       .then(res => {
         console.log('NEW RESPONSE >>>>> ', res);
-        console.log('res[0]:', res[0])
+        console.log('res[0]:', res[0]);
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
       const queryType: string = selectedQuery;
@@ -160,10 +159,12 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
         setCacheHit(cacheHit + 1);
       }
     })
-      .catch((err) => {
-        console.log("Error in fetch: ", JSON.stringify(err));
-        addErrorAlerts((prev) => [...prev, err]);
-      })
+    .catch((err) => {
+      err = JSON.stringify(err);
+      console.log("Error in fetch: ", err);
+      err = 'Invalid query :('
+      addErrorAlerts((prev) => [...prev, err]);
+    })
   }
 
   return (
@@ -187,7 +188,6 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
       </div>
       <div  style={{border: '3px solid white', marginTop: '1em',  borderRadius: '15px'}}>
         <HitMiss cacheHit={cacheHit} cacheMiss={cacheMiss} />
-
       </div>
     </div>
   )
