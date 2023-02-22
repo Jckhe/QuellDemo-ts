@@ -6,8 +6,6 @@ import { memo } from 'react';
 
 const Footer = memo(() => {
 
-
-
   return (
     <div className="footerContainer">
       <div className="footer-image">

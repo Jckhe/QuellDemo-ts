@@ -132,4 +132,3 @@ fragment getalbums on Album {
     }
 }`
 }
-

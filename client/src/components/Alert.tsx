@@ -26,9 +26,6 @@ export const SuccessfulQuery = () => {
 export const BadQuery = (props: BadQueryProps) => {
   const [rendered, toggleRendered] = useState<boolean>(false)
   const [errorMessage, setMessage] = useState<string>('Invalid query!')
-  console.log('HELLO FROM BAD QUERY :) ', props.errorMessage);
-  // setMessage(props.errorMessage);
-
 
   useEffect(() => {
     toggleRendered(true);

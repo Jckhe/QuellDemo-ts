@@ -16,12 +16,10 @@ interface Navbar {
 export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
   const [ rendered, setRendered ] = useState<boolean>(false);
   
-
   useEffect(() => {
     setRendered(true)
     
   }, [])
-
 
   const BirdLogo = () => {
     const [ birdEffect, toggleBirdEffect ] = useState<string>('');
@@ -46,13 +44,9 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
   const AboutButton = () => {
     const [hover, setHover] = useState<boolean>(false);
     
-
-
     return (
       <Button
       onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
-      // onMouseEnter={()=> setHover(true)}
-      // onMouseLeave={()=> setHover(false)}
       href="#scroll-about" 
       sx={{ minWidth:"85px", boxShadow: 'none', minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 'none', overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }} color="secondary" variant='contained'
       >
@@ -62,17 +56,12 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
     )
   }
 
-
-  
   const DemoButton = () => {
     const [hover, setHover] = useState<boolean>(false);
-  
 
     return (
       <Button
       onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
-      // onMouseEnter={()=> setHover(true)}
-      // onMouseLeave={()=> setHover(false)}
       href="#scroll-demo"      
       sx={{ minWidth:"85px", boxShadow: 'none', minHeight: '40px', maxHeight:"40px", maxWidth:"90px", border: 'none', overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center'}} color="secondary" variant='contained'>
         <Slide direction="down" timeout={{enter: 400, exit: 350}} in={!hover} mountOnEnter unmountOnExit><Typography sx={{ position: 'relative'}} variant='button'>Demo</Typography></Slide>
@@ -80,24 +69,12 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
         </Button>
     )
   }
-  // const DemoButton = () => {
-  //   return (
-  //     <button
-  //     onClick={() => {teamComp ? toggleRenderTeam(false) : null}}
-  //     ref="#scroll-demo">Demo
-        
-  //     </button>
-  //   )
-  // }
- 
 
   const DocsButton = () => {
     const [hover, setHover] = useState<boolean>(false);
     return (
       <Link sx={{ textDecoration: 'none'}} target="_blank" href="https://github.com/open-source-labs/Quell#quell" rel="noreferrer">
-      <Button
-      // onMouseEnter={()=> setHover(true)}
-      // onMouseLeave={()=> setHover(false)}    
+      <Button   
       sx={{ minWidth:"85px", minHeight: '40px', maxHeight:"40px", maxWidth:"90px", overflow:'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', 
         border: 'none',
         boxShadow: 'none'}} color="secondary" variant='contained'>
@@ -107,17 +84,6 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
       </Link>
     )
   }
-
-  // const DocsButton = () => {
-  //   const [hover, setHover] = useState<boolean>(false);
-  //   return (
-  //     <Link sx={{ textDecoration: 'none'}} target="_blank" href="https://github.com/open-source-labs/Quell#quell" rel="noreferrer">
-  //     <button className="navBtn">DOCS</button>
-  //     </Link>
-  //   )
-  // }
-
-
 
   return (
     <AppBar
@@ -134,24 +100,11 @@ export function Navbar({teamComp, toggleRenderTeam}: Navbar) {
       </Stack>
       <button className="teamBtn"
         onClick={() => {toggleRenderTeam(!teamComp)}} 
-        // style={{color: 'white'}}
         >{teamComp ? "Home" : "Team" }
       </button>
-      {/* <Button 
-        onClick={() => {toggleRenderTeam(!teamComp)}} 
-        sx={{boxShadow: 'none', height: '100%'}} 
-        variant='contained'
-        >{teamComp ? "Home" : "Team" }
-      </Button> */}
     </AppBar>
   )
 }
-
-
-
-
-// sx={{minHeight: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}
-
 
 
 

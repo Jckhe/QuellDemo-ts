@@ -291,7 +291,6 @@ const Team = memo(() => {
     window.scrollTo(0, 0)
   }, [])
 
-
   return (
     <div id={renderFx}>
       <img id="team-quell" src={Header}></img>

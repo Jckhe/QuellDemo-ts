@@ -3,7 +3,6 @@ const { parse } = require('graphql/language/parser');
 const { visit, BREAK } = require('graphql/language/visitor');
 const { graphql, GraphQLError } = require('graphql');
 const e = require('express');
-// const { PlaylistRemove } = require('@mui/icons-material');
 
 const defaultCostParams = {
   maxCost: 50, // maximum cost allowed before a request is rejected
@@ -16,7 +15,6 @@ const defaultCostParams = {
 }
 
 const idCache = {}
-
 
 class QuellCache {
   // default expiry time is 14 days in milliseconds
@@ -71,7 +69,7 @@ class QuellCache {
      if (req.body.costOptions.ipRate) ipRates = req.body.costOptions.ipRate;
      //  else ipRates = this.costParameters.ipRate;
      //return error if no query in request.
-     if (!req.body.query) return res.status(400);
+     if (!req.body.query) return next({log: 'Error: no GraphQL query found on request body'});
      const ip = req.ip;
      const now = Math.floor(Date.now() / 1000);
      const ipKey = `${ip}:${now}`;
@@ -79,7 +77,6 @@ class QuellCache {
      this.redisCache.incr(ipKey, (err, count) => {
       if (err) {
         console.error('Redis cache error: ', err);
-        // return res.status(500).send('Internal Server Error');
         return next({ log: 'Internal Server Error in redis :(' })
       }
 
@@ -90,14 +87,7 @@ class QuellCache {
 
     const calls = await this.getFromRedis(ipKey);
 
-    // console.log('CALLS>>>>> ', calls);
-    // console.log('IPRATE >>>>>> ', ipRates);
-
-    if (calls > ipRates) {
-      // console.log('TOO MANY REQUESTS:!!!!!!!!!! STOP THE MADNESS!!!!');
-      // console.log('calls:', calls, 'ipRate:', ipRates);
-      return next({ log: `Express error handler caught too many requests from this IP address: ${ip}` });  
-    }
+    if (calls > ipRates) return next({ log: `Express error handler caught too many requests from this IP address: ${ip}` });  
     
     return next();
   } 
@@ -138,9 +128,7 @@ class QuellCache {
     //   });
     
     // handle request without query
-    if (!req.body.query) {
-      return next({log: 'Error: no GraphQL query found on request body'});
-    }
+    if (!req.body.query) return next({log: 'Error: no GraphQL query found on request body'});
     // retrieve GraphQL query string from request object;
     const queryString = req.body.query;
     // console.log('QueryString before AST; queryString:', queryString);
@@ -617,50 +605,6 @@ class QuellCache {
     }
 
     return protoObj;
-  }
-
-  /**
-   * createRedisKey creates key based on field name and argument id and returns string or null if key creation is not possible
-   * @param {Object} mutationMap -
-   * @param {Object} proto -
-   * @param {Object} protoArgs -
-   * returns redisKey if possible, e.g. 'Book-1' or 'Book-2', where 'Book' is name from mutationMap and '1' is id from protoArgs
-   * and isExist if we have this key in redis
-   *
-   */
-  async createRedisKey(mutationMap, proto) {
-    console.log('creating Redis Key');
-    let isExist = false;
-    let redisKey;
-    let redisValue = null;
-    for (const mutationName in proto) {
-      // proto.__args
-      // mutation { country { id: 123, name: 'asdlkfasldkfa' } }
-      const mutationArgs = protoArgs[mutationName];
-      redisKey = mutationMap[mutationName];
-      for (const key in mutationArgs) {
-        let identifier = null;
-        if (key === 'id' || key === '_id') {
-          identifier = mutationArgs[key];
-          redisKey = mutationMap[mutationName] + '-' + identifier;
-          isExist = await this.checkFromRedis(redisKey);
-          console.log('isExist:', isExist);
-          if (isExist) {
-            console.log('redis key line 546ish: ' + redisKey)
-            redisValue = await this.getFromRedis(redisKey);
-            redisValue = JSON.parse(redisValue);
-            // combine redis value and protoArgs
-            let argumentsValue;
-            for (let mutationName in protoArgs) {
-              // change later, now we assume that we have only one mutation
-              argumentsValue = protoArgs[mutationName];
-            }
-            redisValue = this.updateObject(redisValue, argumentsValue);
-          }
-        }
-      }
-    }
-    return { redisKey, isExist, redisValue };
   }
 
   /**

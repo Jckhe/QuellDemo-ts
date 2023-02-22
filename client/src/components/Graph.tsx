@@ -20,8 +20,6 @@ ChartJS.register(
   Legend
 );
 
-
-
 export function Graph({responseTimes, selectedQuery, queryTypes}: GraphProps) {
   
   let number = 0;
@@ -55,10 +53,8 @@ export function Graph({responseTimes, selectedQuery, queryTypes}: GraphProps) {
     },
   };
 
-  //
   useEffect(() => {
   }, [responseTimes])
-
 
   return (
     <div className="graphContainer">

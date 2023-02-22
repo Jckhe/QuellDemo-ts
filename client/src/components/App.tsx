@@ -6,8 +6,6 @@ import  About  from './About';
 import Footer from './Footer';
 const LazyLoadTeam = React.lazy(() => import('./TeamCards'))
 
-
-
 function App() {
   const [ renderFx, toggleRenderFx ] = useState<string>('')
   const [ teamComp, toggleRenderTeam] = useState<boolean>(false)
@@ -21,7 +19,6 @@ function App() {
   useEffect(() => {
 
   }, [teamComp])
-
 
   return (
     <>
@@ -38,7 +35,5 @@ function App() {
     </>
   )
 }
-
-
 
 export default App;

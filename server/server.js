@@ -4,7 +4,6 @@ const app = express();
 const cors = require('cors');
 const bodyparser = require('body-parser')
 const mongoose = require('mongoose');
-// const schema = makeExecutableSchema({typeDefs, resolvers});
 const QuellCache = require('../quell-server/src/quell');
 const quellCache = new QuellCache(schema, 13680, 3600);
 

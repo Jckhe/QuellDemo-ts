@@ -4,7 +4,6 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-
 export function HitMiss({cacheMiss, cacheHit}: HitMissProps) {
     console.log('inside hitmiss component...cacheMiss = ', cacheMiss)
     console.log('inside hitmiss component....cacheHit= ', cacheHit)
@@ -13,11 +12,10 @@ export function HitMiss({cacheMiss, cacheHit}: HitMissProps) {
       datasets: [
         {
           label: 'Hit or Miss',
-          data: [cacheHit, cacheMiss], //should get these from state 
+          data: [cacheHit, cacheMiss],
           backgroundColor: [
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 99, 132, 0.2)',
-            
           ],
           borderColor: [
             'rgba(54, 162, 235, 1)',

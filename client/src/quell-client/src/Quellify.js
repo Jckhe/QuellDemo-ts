@@ -1,6 +1,5 @@
 const { parse } = require('graphql/language/parser');
 const determineType = require('./helpers/determineType');
-
 const loki = require('lokijs');
 const lokidb = new loki('client-cache');
 let lokiCache = lokidb.addCollection('loki-client-cache', { disableMeta: true });
@@ -31,9 +30,6 @@ const clearCache = () => {
  *  @param {string} endPoint - The address to where requests are sent and processed. E.g. '/graphql'.
  *  @param {string} query - The graphQL query that is requested from the client
  */
-
-
-
 async function Quellify(endPoint, query, costOptions) {
   const performFetch = async () => {
     const fetchOptions = {
@@ -51,7 +47,6 @@ async function Quellify(endPoint, query, costOptions) {
     console.log('parsedData:', parsedData);
     return parsedData;
   };
-
   
   // Create AST based on the input query using the parse method available in the graphQL library (further reading: https://en.wikipedia.org/wiki/Abstract_syntax_tree)
   const AST = parse(query);
@@ -94,16 +89,13 @@ async function Quellify(endPoint, query, costOptions) {
       console.log('CACHE MISS data does not exist in loki cache');
 
       const parsedData = await performFetch();
-      console.log('parsed:', parsedData);
+      console.log('parsed:', parsedData.data);
       
       // add new data to lokiCache, and add $loki to IDcache
       const addedEntry = lokiCache.insert(parsedData.data);
       //add query to IDCache so that the query returns the $loki index
       IDCache[query] = addedEntry.$loki;
       console.log('from line 101, addedEntry: ', addedEntry)
-        // if (parsedData.cached === true) {
-        //   return [addedEntry, false, true];
-        // }
       
       return [addedEntry, false];
     }

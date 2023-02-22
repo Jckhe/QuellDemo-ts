@@ -11,8 +11,6 @@ import { Quellify, clearLokiCache } from '../quell-client/src/Quellify.js';
 import { styled } from '@mui/material/styles';
 import { width } from '@mui/system';
 
-
-
 const Demo = memo(() => {
   const [ responseTimes, addResponseTimes ] = useState<number[]|[]>([])
   const [ errorAlerts, addErrorAlerts ] = useState<string[]>([]);
@@ -27,10 +25,8 @@ const Demo = memo(() => {
   const [ cacheHit, setCacheHit ] = useState<number>(0);
   const [ cacheMiss, setCacheMiss ] = useState<number>(0);
 
-
   useEffect(() => {
   }, [errorAlerts, responseTimes])
-
 
   function handleToggle(event: React.ChangeEvent<HTMLInputElement>): void {
     setIsToggled(event.target.checked);
@@ -142,13 +138,8 @@ if (isToggled) {
 });
 
 function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: QueryDemoProps) {
-  // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
-  // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
-  // const [ cacheHit, setCacheHit ] = useState<number>(0);
-  // const [ cacheMiss, setCacheMiss ] = useState<number>(0);
   
-
   function submitQuery() {
     console.log("Checking Query in Submit Query: ", typeof query)
     const startTime = (new Date()).getTime();
@@ -174,15 +165,6 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
         addErrorAlerts((prev) => [...prev, err]);
       })
   }
-
-  // function resetGraph() {
-  //   console.log('resetting the graph');
-  //   addResponseTimes([]);
-  //   clearLokiCache();
-  //   fetch('/clearCache')
-  //   .then((res) => console.log('Cleared Server Cache!'));
-  // }
-
 
   return (
     <div spellCheck='false' className="demoLeft"> 
@@ -212,48 +194,22 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
 }
 
 function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, maxCost, ipRate, selectedQuery, setQueryChoice, query, setQuery, queryTypes, addQueryTypes, cacheHit, cacheMiss, setCacheHit, setCacheMiss }: QueryDemoProps) {
-  // const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
-  // const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ response, setResponse ] = useState<string>('');
-  // const [ cacheHit, setCacheHit ] = useState<number>(0);
-  // const [ cacheMiss, setCacheMiss ] = useState<number>(0);
   
-
   function submitQueryServer() {
     console.log("Checking Query in Submit Query Server: ", typeof query);
     clearLokiCache();
     const startTime = (new Date()).getTime();
-    // Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
-    //   .then(res => {
-    //     console.log('res[0]:', res[0]);
-    //     console.log('res[1]:', res[1]);
-    //   const responseTime: number = (new Date()).getTime() - startTime;
-    //   addResponseTimes([...responseTimes, responseTime]);
-    //   const queryType: string = selectedQuery;
-    //   addQueryTypes([...queryTypes, queryType])
-    //   setResponse(JSON.stringify(res[0], null, 2));
 
-    //   if (res[2] === false) {
-    //     setCacheMiss(cacheMiss + 1);
-        
-    //   } else if (res[2] === true) {
-    //     setCacheHit(cacheHit + 1);
-    //   }
-    // })
-    //   .catch((err) => {
-    //     console.log("Error in fetch: ", err)
-    //     addErrorAlerts((prev) => [...prev, 1])
-    //   })
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query: query, costOptions: { maxDepth, maxCost, ipRate } }),
+    };
 
-      const fetchOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query: query, costOptions: { maxDepth, maxCost, ipRate } }),
-      };
-
-      let resError: string;
+    let resError: string;
 
   fetch('/graphql', fetchOptions)
     .then(res => res.json())
@@ -269,22 +225,10 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
     .catch((err) => {
       err = JSON.stringify(err);
       console.log("Error in fetch: ", err);
-      // adding global error handler in server stops this from functioning properly
-      // would likely change 1 to proper error message from '1'
-      // how to pass on proper errors though?
       err = resError;
       addErrorAlerts((prev) => [...prev, err]);
     })
   }
-
-  // function resetGraph() {
-  //   console.log('resetting the graph');
-  //   addResponseTimes([]);
-  //   clearLokiCache();
-  //   fetch('/clearCache')
-  //   .then((res) => console.log('Cleared Server Cache!'));
-  // }
-
 
   return (
     <div spellCheck='false' className="demoLeft"> 
@@ -309,7 +253,6 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
         border: '3px solid white', 
         marginTop: '1em',  borderRadius: '15px'}}>
         <HitMiss cacheHit={cacheHit} cacheMiss={cacheMiss} />
-
       </div>
     </div>
   )
@@ -321,9 +264,7 @@ interface DemoControls {
   submitQuery: () => void;
 }
 
-
 const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls) => {
-
 
   return (
     <div className="dropDownContainer" >
@@ -337,7 +278,6 @@ const DemoControls = ({selectedQuery, setQueryChoice, submitQuery}: DemoControls
   )
 }
 
-
 const CacheControls = ({ setDepth, setCost, setIPRate, addResponseTimes, setCacheHit, setCacheMiss, cacheHit, cacheMiss }: CacheControlProps) => {
 
   function resetGraph() {
@@ -346,8 +286,6 @@ const CacheControls = ({ setDepth, setCost, setIPRate, addResponseTimes, setCach
     clearLokiCache();
     setCacheHit(cacheHit = 0);
     setCacheMiss(cacheMiss = 0);
-    // fetch('/clearCache')
-    // .then((res) => console.log('Cleared Server Cache!'));
   }
 
   const clearClientCache = () => {
@@ -361,9 +299,6 @@ const CacheControls = ({ setDepth, setCost, setIPRate, addResponseTimes, setCach
         <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>      
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={1}>
-      {/* <Limit setDepth={setDepth} setCost={setCost}/> */}
-       {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
-       <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
       </Stack>
     </div>
   )
@@ -392,7 +327,6 @@ const CacheControlsServer = ({ setDepth, setCost, setIPRate, addResponseTimes, c
         <Button sx={{ border: 'none', textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem'}} onClick={clearServerCache} color="secondary" variant='contained'>Clear Server Cache</Button>
         <Button onClick={resetGraph} sx={{textAlign: 'center', minHeight: '40px', maxHeight:"40px", fontSize: '.85rem' }} size='medium' color='secondary' variant='contained'>Reset Graph</Button>
       </Stack>
-      {/* <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={2}> */}
       <div style={{
         display: 'flex',
         flexDirection: 'row',
@@ -402,9 +336,6 @@ const CacheControlsServer = ({ setDepth, setCost, setIPRate, addResponseTimes, c
       }}>
         <Limit setDepth={setDepth} setCost={setCost} setIPRate={setIPRate} addResponseTimes= {addResponseTimes} cacheHit={cacheHit} cacheMiss={cacheMiss} setCacheHit={setCacheHit} setCacheMiss={setCacheMiss}/>
       </div>
-       {/* <StyledDiv>{'Max Depth: 10'}</StyledDiv>
-       <StyledDiv>{'Max Cost: 50'}</StyledDiv> */}
-      {/* </Stack> */}
     </div>
   )
 }
@@ -441,16 +372,12 @@ function QuerySelect({setQueryChoice, selectedQuery} : BasicSelectProps) {
   );
 }
 
-
 const StyledDiv = styled('div')(({ theme }) => ({
   ...theme.typography.button,
   backgroundColor: theme.palette.primary.main,
-  // padding: theme.spacing(0.55, 1.75),
-  // border: '1px solid black',
   borderRadius: '5px',
   fontSmooth: 'always',
   color: 'white',
-  // cursor: 'pointer',
   boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
 }));
 
