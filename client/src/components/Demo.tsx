@@ -19,7 +19,7 @@ const Demo = memo(() => {
   const [ queryTypes, addQueryTypes ] = useState<string[]>([]);
   const [ maxDepth, setDepth ] = useState<string>('10');
   const [ maxCost, setCost ] = useState<string>('50');
-  const [ ipRate, setIPRate ] = useState<number>(22);
+  const [ ipRate, setIPRate ] = useState<number|string>(22);
   const [ isToggled, setIsToggled ] = useState<boolean>(false);
   const [ response, setResponse ] = useState<string>('');
   const [ cacheHit, setCacheHit ] = useState<number>(0);
@@ -243,7 +243,7 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
           fullWidth={true}
           sx={{border: '1px solid white', borderStyle: 'inset'}}
           inputProps={{style: {fontSize: '0.9rem', width: "100%", backgroundColor: '#474f57', padding: '10px', color: 'white', fontFamily: 'Monaco'}}}
-          rows="50"
+          rows="100"
           value={response}
           >
           </TextField>
@@ -429,7 +429,7 @@ interface QueryDemoProps {
   addQueryTypes: React.Dispatch<React.SetStateAction<any[]>>;
   maxDepth: string;
   maxCost: string;
-  ipRate: string;
+  ipRate: string|number;
   cacheHit: number;
   cacheMiss: number;
   setCacheHit: Dispatch<SetStateAction<number>>
@@ -439,7 +439,7 @@ interface QueryDemoProps {
 interface CacheControlProps {
   setDepth: (val: string) => void;
   setCost: (val: string) => void;
-  setIPRate: (val: number) => void;
+  setIPRate: (val: number|string) => void;
   addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
   cacheHit: number;
   cacheMiss: number;
