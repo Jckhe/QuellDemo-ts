@@ -202,6 +202,19 @@ const RootMutations = new GraphQLObjectType({
         }
       }
     },
+    deleteCity: {
+      type: CityType,
+      args: {name: {type: GraphQLString}},
+      async resolve(parent, args) {
+        const findCity = await Cities.find({name: args.name})
+        if (findCity) {
+          // const newCity = await Cities.create({name: args.name, city: args.city})
+         const deletedCity = await Cities.deleteOne({name: args.name});
+         return deletedCity;
+        }
+      }
+    },
+    
     addCountry: {
       type: CountryType,
       args: {name: {type: GraphQLString}},
