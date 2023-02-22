@@ -111,8 +111,7 @@ export const querySamples: querySamples = {
               }
           }
       }
-  }
-}`,
+  }`,
   'fragment': `query {
     artist(name: "Frank Ocean") {
         id

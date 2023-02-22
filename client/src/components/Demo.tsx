@@ -15,7 +15,7 @@ import { width } from '@mui/system';
 
 const Demo = memo(() => {
   const [ responseTimes, addResponseTimes ] = useState<number[]|[]>([])
-  const [ errorAlerts, addErrorAlerts ] = useState<number[]>([]);
+  const [ errorAlerts, addErrorAlerts ] = useState<string[]>([]);
   const [ selectedQuery, setQueryChoice ] = useState<string>('2depth');
   const [ query, setQuery ] = useState<string>(querySamples[selectedQuery]);
   const [ queryTypes, addQueryTypes ] = useState<string[]>([]);
@@ -78,11 +78,13 @@ if (isToggled) {
           
         </div>
       </div>
+      {console.log('ERROR ALERTS >>>>> ', JSON.stringify(errorAlerts))}
       {responseTimes.map((el, i) => {
           return <SuccessfulQuery key={i}/>
         })}
       {errorAlerts.map((el, i) => {
-          return <BadQuery key={i}/>
+        console.log('ERROR HERE >>>>> ', el);
+          return <BadQuery errorMessage={el} key={i}/>
         })}
     </div>
   )
@@ -152,6 +154,7 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
     const startTime = (new Date()).getTime();
     Quellify('/graphql', query, { maxDepth, maxCost, ipRate })
       .then(res => {
+        console.log('NEW RESPONSE >>>>> ', res);
         console.log('res[0]:', res[0])
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
@@ -167,8 +170,8 @@ function QueryDemo({ addErrorAlerts, responseTimes, addResponseTimes, maxDepth, 
       }
     })
       .catch((err) => {
-        console.log("Error in fetch: ", err)
-        addErrorAlerts((prev) => [...prev, 1])
+        console.log("Error in fetch: ", JSON.stringify(err));
+        addErrorAlerts((prev) => [...prev, err]);
       })
   }
 
@@ -250,18 +253,27 @@ function QueryDemoServer({ addErrorAlerts, responseTimes, addResponseTimes, maxD
         body: JSON.stringify({ query: query, costOptions: { maxDepth, maxCost, ipRate } }),
       };
 
+      let resError: string;
+
   fetch('/graphql', fetchOptions)
     .then(res => res.json())
     .then(res => {
+      console.log('RES LOCALS >>>>> ', res);
+      resError = res;
       const responseTime: number = (new Date()).getTime() - startTime;
       addResponseTimes([...responseTimes, responseTime]);
-      setResponse(JSON.stringify(res.data, null, 2));
-      if (res.cached === true) setCacheHit(cacheHit + 1);
+      setResponse(JSON.stringify(res.queryResponse.data, null, 2));
+      if (res.queryResponse.cached === true) setCacheHit(cacheHit + 1);
       else setCacheMiss(cacheMiss + 1);
     })
     .catch((err) => {
+      err = JSON.stringify(err);
       console.log("Error in fetch: ", err);
-      addErrorAlerts((prev) => [...prev, 1]);
+      // adding global error handler in server stops this from functioning properly
+      // would likely change 1 to proper error message from '1'
+      // how to pass on proper errors though?
+      err = resError;
+      addErrorAlerts((prev) => [...prev, err]);
     })
   }
 
@@ -481,7 +493,7 @@ interface BasicSelectProps {
 interface QueryDemoProps {
   responseTimes: number[];
   addResponseTimes: React.Dispatch<React.SetStateAction<any[]>>;
-  addErrorAlerts: React.Dispatch<React.SetStateAction<number[]>>;
+  addErrorAlerts: React.Dispatch<React.SetStateAction<string[]>>;
   setQueryChoice: Dispatch<SetStateAction<string>>;
   selectedQuery: string;
   query: string;

@@ -13,26 +13,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors());
 
-
 mongoose
   .connect("mongodb+srv://quello:quello@cluster0.t8iquko.mongodb.net/?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to BongoDB'))
   .catch(err => console.log(err))
 
-
 const PORT = process.env.PORT || 3000;
-
-
 
 app.use(express.static("./dist"));
 
 app.use('/graphql', quellCache.rateLimiter, quellCache.costLimit, quellCache.depthLimit, quellCache.query, (req, res) => {
-  if (res.locals.queryErr) return res.status(200).json(res.locals.queryErr);
-  else return res.status(200).send(res.locals.queryResponse);
+  return res.status(200).send(res.locals);
 });
 
-// clear cache
 app.get('/clearCache', quellCache.clearCache, (req, res) => {
   return res.status(200).send('Redis cache successfully cleared');
 });
@@ -53,7 +47,7 @@ app.use((err, req, res, next) => {
   };
   const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
-  return res.status(errorObj.status).json(errorObj.message);
+  return res.status(errorObj.status).json(errorObj.log);
 });
 
 app.listen(PORT, () => {

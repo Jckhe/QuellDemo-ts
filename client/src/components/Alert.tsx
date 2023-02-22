@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 export const SuccessfulQuery = () => {
   const [rendered, toggleRendered] = useState<boolean>(false)
 
-
   useEffect(() => {
     toggleRendered(true);
     //fades away
@@ -12,7 +11,6 @@ export const SuccessfulQuery = () => {
       toggleRendered(false)
     }, 3000)
   }, [])
-
 
   return (
    <div id="alertDiv">
@@ -25,8 +23,11 @@ export const SuccessfulQuery = () => {
   )
 }
 
-export const BadQuery = () => {
+export const BadQuery = (props: BadQueryProps) => {
   const [rendered, toggleRendered] = useState<boolean>(false)
+  const [errorMessage, setMessage] = useState<string>('Invalid query!')
+  console.log('HELLO FROM BAD QUERY :) ', props.errorMessage);
+  // setMessage(props.errorMessage);
 
 
   useEffect(() => {
@@ -37,16 +38,19 @@ export const BadQuery = () => {
     }, 3000)
   }, [])
 
-
   return (
    <div id="alertDiv">
      <Fade in={rendered} timeout={{enter: 600, exit: 550}} mountOnEnter unmountOnExit>
       <Alert onClose={() => {
         toggleRendered(false)
-        }} sx={{border: 0.5, height: 45, display: 'flex', alignItems:'center', width: 175, position: 'fixed'}} severity="error">Invalid Query!</Alert>
+        }} sx={{border: 0.5, display: 'flex', alignItems:'center', width: 175, position: 'fixed'}} severity="error">{props.errorMessage}</Alert>
     </Fade>
    </div>
   )
+}
+
+interface BadQueryProps {
+  errorMessage: string
 }
 
 

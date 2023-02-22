@@ -46,7 +46,8 @@ async function Quellify(endPoint, query, costOptions) {
     console.log("DA QUERY IN QUELLIFY: ", typeof query)
     const serverResponse = await fetch(endPoint, fetchOptions);
     console.log('serverResponse', serverResponse);
-    const parsedData =  await serverResponse.json();
+    let parsedData =  await serverResponse.json();
+    parsedData = parsedData.queryResponse;
     console.log('parsedData:', parsedData);
     return parsedData;
   };
