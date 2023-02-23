@@ -14,7 +14,7 @@ const defaultCostParams = {
   ipRate: 3 // requests allowed per second
 }
 
-const idCache = {}
+let idCache = {};
 
 class QuellCache {
   // default expiry time is 14 days in milliseconds
