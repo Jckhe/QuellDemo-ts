@@ -205,10 +205,9 @@ const RootMutations = new GraphQLObjectType({
       type: CityType,
       args: {name: {type: GraphQLString}},
       async resolve(parent, args) {
-        const findCity = await Cities.find({name: args.name});
+        const findCity = await Cities.findOne({name: args.name});
         if (findCity) {
-          const deletedCity = await Cities.deleteOne({name: args.name});
-          return deletedCity;
+          await Cities.deleteOne({name: args.name});
         }
       }
     },
